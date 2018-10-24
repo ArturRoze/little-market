@@ -4,20 +4,20 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name="shipment")
-public class Shipment {
+@Table(name = "shipment")
+public class ShipmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String description;
-    @Column
+    @Column(name = "income_date")
     private Timestamp incomeDate;
 
-    public Shipment() {
+    public ShipmentEntity() {
     }
 
-    public Shipment(String description, Timestamp incomeDate) {
+    public ShipmentEntity(String description, Timestamp incomeDate) {
         this.description = description;
         this.incomeDate = incomeDate;
     }
@@ -32,7 +32,7 @@ public class Shipment {
 
     @Override
     public String toString() {
-        return "Shipment{" +
+        return "ShipmentEntity{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", incomeDate=" + incomeDate +

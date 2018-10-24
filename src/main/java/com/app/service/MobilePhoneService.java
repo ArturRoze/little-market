@@ -1,12 +1,14 @@
 package com.app.service;
 
-import com.app.model.MobilePhone;
+import com.app.model.MobilePhoneEntity;
 import com.app.model.MobilePhoneDto;
-import com.app.model.Order;
+import com.app.model.OrderEntity;
+
+import java.util.List;
 
 public interface MobilePhoneService extends BlockProduct{
 
-    MobilePhone buyProduct(Order order);
+    List<MobilePhoneEntity> buyProduct(OrderEntity orderEntity);
 
     boolean addProduct(MobilePhoneDto mobilePhoneDto);
 

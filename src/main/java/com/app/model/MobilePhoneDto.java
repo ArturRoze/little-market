@@ -6,22 +6,13 @@ public class MobilePhoneDto {
 
     private Integer group;
 
+    private String model;
+
     private Double price;
 
-    private ProductDescription productDescription;
+    private ProductDescriptionDto productDescription;
 
-    private Shipment shipment;
-
-    public MobilePhoneDto() {
-    }
-
-    public MobilePhoneDto(String serialNumber, Integer group, Double price, ProductDescription productDescription, Shipment shipment) {
-        this.serialNumber = serialNumber;
-        this.group = group;
-        this.price = price;
-        this.productDescription = productDescription;
-        this.shipment = shipment;
-    }
+    private ShipmentDto shipment;
 
     public String getSerialNumber() {
         return serialNumber;
@@ -39,6 +30,14 @@ public class MobilePhoneDto {
         this.group = group;
     }
 
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
     public Double getPrice() {
         return price;
     }
@@ -47,20 +46,20 @@ public class MobilePhoneDto {
         this.price = price;
     }
 
-    public ProductDescription getProductDescription() {
+    public ProductDescriptionDto getProductDescription() {
         return productDescription;
     }
 
-    public void setProductDescription(ProductDescription productDescription) {
-        this.productDescription = productDescription;
+    public void setProductDescription(ProductDescriptionDto productDescriptionDto) {
+        this.productDescription = productDescriptionDto;
     }
 
-    public Shipment getShipment() {
+    public ShipmentDto getShipment() {
         return shipment;
     }
 
-    public void setShipment(Shipment shipment) {
-        this.shipment = shipment;
+    public void setShipment(ShipmentDto shipmentDto) {
+        this.shipment = shipmentDto;
     }
 
     @Override
@@ -68,9 +67,10 @@ public class MobilePhoneDto {
         return "MobilePhoneDto{" +
                 "serialNumber='" + serialNumber + '\'' +
                 ", group=" + group +
+                ", model='" + model + '\'' +
                 ", price=" + price +
-                ", productDescription=" + productDescription +
-                ", shipment=" + shipment +
+                ", productDescriptionDto=" + productDescription +
+                ", shipmentDto=" + shipment +
                 '}';
     }
 }

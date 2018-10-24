@@ -2,7 +2,7 @@ package com.app.model;
 
 import java.util.List;
 
-public class BlockRequest {
+public class BlockRequestEntity {
 
     private List<Integer> ids;
 
@@ -10,10 +10,10 @@ public class BlockRequest {
 
     private ProductsType productsType;
 
-    public BlockRequest() {
+    public BlockRequestEntity() {
     }
 
-    public BlockRequest(List<Integer> ids, String blockReason, ProductsType productsType) {
+    public BlockRequestEntity(List<Integer> ids, String blockReason, ProductsType productsType) {
         this.ids = ids;
         this.blockReason = blockReason;
         this.productsType = productsType;
@@ -45,7 +45,7 @@ public class BlockRequest {
 
     @Override
     public String toString() {
-        return "BlockRequest{" +
+        return "BlockRequestEntity{" +
                 "ids=" + ids +
                 ", blockReason='" + blockReason + '\'' +
                 ", productsType=" + productsType +

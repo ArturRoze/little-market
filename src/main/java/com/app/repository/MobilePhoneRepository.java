@@ -1,16 +1,16 @@
 package com.app.repository;
 
-import com.app.model.MobilePhone;
+import com.app.model.MobilePhoneEntity;
 
 import java.util.List;
 
 public interface MobilePhoneRepository {
 
-    MobilePhone save(MobilePhone product);
+    MobilePhoneEntity save(MobilePhoneEntity product);
 
-    List<MobilePhone> readAll();
+    List<MobilePhoneEntity> readAll();
 
-    MobilePhone read(int id);
+    List<MobilePhoneEntity> getAllByModel(String model);
 
     void update(int id);
 

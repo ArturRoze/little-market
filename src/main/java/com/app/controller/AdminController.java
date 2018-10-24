@@ -1,8 +1,7 @@
 package com.app.controller;
 
-import com.app.model.BlockRequest;
+import com.app.model.BlockRequestEntity;
 import com.app.model.MobilePhoneDto;
-import com.app.service.BlockProduct;
 import com.app.service.MobilePhoneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,18 +32,17 @@ public class AdminController {
     public ResponseEntity addProduct(@RequestBody MobilePhoneDto mobilePhoneDto) {
         LOGGER.info("income request: {}", mobilePhoneDto);
 
-        mobilePhoneService.addProduct(mobilePhoneDto);
+        LOGGER.info("resultOfAdd: {}", mobilePhoneService.addProduct(mobilePhoneDto));
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/block")
-    public ResponseEntity blockProduct(@RequestBody BlockRequest blockRequest) {
-        LOGGER.info("income request: {}", blockRequest);
+    public ResponseEntity blockProduct(@RequestBody BlockRequestEntity blockRequestEntity) {
+        LOGGER.info("income request: {}", blockRequestEntity);
 
-
-        List<Integer> ids = blockRequest.getIds();
-        String blockReason = blockRequest.getBlockReason();
+        List<Integer> ids = blockRequestEntity.getIds();
+        String blockReason = blockRequestEntity.getBlockReason();
         mobilePhoneService.block(ids, blockReason);
 
         return new ResponseEntity(HttpStatus.OK);

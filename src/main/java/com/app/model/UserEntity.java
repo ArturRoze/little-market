@@ -5,12 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "manager")
-public class Manager extends BasicUser {
+@Table(name = "user")
+public class UserEntity extends BasicUser {
 
     @Column
     private String firstName;
     @Column
     private String lastName;
-
 }

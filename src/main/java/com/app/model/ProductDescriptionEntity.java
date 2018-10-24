@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="product_description")
-public class ProductDescription {
+public class ProductDescriptionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,11 +13,10 @@ public class ProductDescription {
     @Column
     private String description;
 
-
-    public ProductDescription() {
+    public ProductDescriptionEntity() {
     }
 
-    public ProductDescription(String name, String description) {
+    public ProductDescriptionEntity(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -48,7 +47,7 @@ public class ProductDescription {
 
     @Override
     public String toString() {
-        return "ProductDescription{" +
+        return "ProductDescriptionEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
