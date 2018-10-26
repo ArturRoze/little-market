@@ -30,6 +30,22 @@ public class ShipmentEntity {
         this.id = id;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Timestamp getIncomeDate() {
+        return incomeDate;
+    }
+
+    public void setIncomeDate(Timestamp incomeDate) {
+        this.incomeDate = incomeDate;
+    }
+
     @Override
     public String toString() {
         return "ShipmentEntity{" +

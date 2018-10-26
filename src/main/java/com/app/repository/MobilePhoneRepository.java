@@ -7,12 +7,10 @@ import java.util.List;
 public interface MobilePhoneRepository {
 
     MobilePhoneEntity save(MobilePhoneEntity product);
-
+    MobilePhoneEntity readById(Long id);
+    List<MobilePhoneEntity> readAllByModel(String model);
     List<MobilePhoneEntity> readAll();
-
-    List<MobilePhoneEntity> getAllByModel(String model);
-
-    void update(int id);
-
-    void delete(int id);
+    MobilePhoneEntity update(MobilePhoneEntity product);
+    void delete(MobilePhoneEntity product);
+    void deleteById(Long id);
 }

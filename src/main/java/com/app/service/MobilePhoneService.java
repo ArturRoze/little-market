@@ -9,8 +9,10 @@ import java.util.List;
 public interface MobilePhoneService extends BlockProduct{
 
     List<MobilePhoneEntity> buyProduct(OrderEntity orderEntity);
-
     boolean addProduct(MobilePhoneDto mobilePhoneDto);
-
-
+    MobilePhoneEntity updateProduct(MobilePhoneDto mobilePhoneDto, Long id);
+    List<MobilePhoneEntity> getAllProducts();
+    List<MobilePhoneEntity> getAllProductsByModel(String model);
+    void deleteProduct(MobilePhoneEntity mobilePhoneEntity);
+    void deleteById(Long id);
 }

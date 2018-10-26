@@ -20,23 +20,18 @@ import java.util.List;
 public class UserController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-
     private final MobilePhoneService mobilePhoneService;
 
     @Autowired
     public UserController(MobilePhoneService mobilePhoneService) {
+        LOGGER.info("create UserController");
         this.mobilePhoneService = mobilePhoneService;
     }
 
-    //TODO
     @PostMapping("/buy")
     public ResponseEntity buyProduct(@RequestBody OrderEntity orderEntity) {
         LOGGER.info("buy product : {}", orderEntity);
-
         List<MobilePhoneEntity> mobilePhoneEntities = mobilePhoneService.buyProduct(orderEntity);
-
         return new ResponseEntity(HttpStatus.OK);
     }
-
-
 }

@@ -16,7 +16,6 @@ import java.util.List;
 public class MobilePhoneServiceImpl implements MobilePhoneService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-
     private final MobilePhoneRepository mobilePhoneRepository;
 
     @Autowired
@@ -28,7 +27,7 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
     public List<MobilePhoneEntity> buyProduct(OrderEntity orderEntity) {
         String modelOfProduct = orderEntity.getModel();
         Integer count = orderEntity.getCount();
-        List<MobilePhoneEntity> orderedProduct = mobilePhoneRepository.getAllByModel(modelOfProduct);
+        List<MobilePhoneEntity> orderedProduct = mobilePhoneRepository.readAllByModel(modelOfProduct);
 //        if (orderedProduct.isEmpty()){
 //            return orderedProduct;
 //        }
@@ -37,10 +36,36 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
 
     @Override
     public boolean addProduct(MobilePhoneDto mobilePhoneDto) {
-
         MobilePhoneEntity mobilePhoneEntity = convertToMobilePhoneEntity(mobilePhoneDto);
         MobilePhoneEntity savedMobilePhoneEntity = mobilePhoneRepository.save(mobilePhoneEntity);
         return savedMobilePhoneEntity.getId() != null;
+    }
+
+    @Override
+    public MobilePhoneEntity updateProduct(MobilePhoneDto mobilePhoneDto, Long id) {
+        MobilePhoneEntity mobilePhoneEntity = convertToMobilePhoneEntity(mobilePhoneDto);
+        mobilePhoneEntity.setId(id);
+        return mobilePhoneRepository.update(mobilePhoneEntity);
+    }
+
+    @Override
+    public List<MobilePhoneEntity> getAllProducts() {
+        return mobilePhoneRepository.readAll();
+    }
+
+    @Override
+    public List<MobilePhoneEntity> getAllProductsByModel(String model) {
+        return mobilePhoneRepository.readAllByModel(model);
+    }
+
+    @Override
+    public void deleteProduct(MobilePhoneEntity mobilePhoneEntity) {
+        mobilePhoneRepository.delete(mobilePhoneEntity);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        mobilePhoneRepository.deleteById(id);
     }
 
     private MobilePhoneEntity convertToMobilePhoneEntity(MobilePhoneDto mobilePhoneDto) {
@@ -67,15 +92,14 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
         ProductDescriptionDto productDescriptionDto = mobilePhoneDto.getProductDescription();
         Long productDescriptionId = productDescriptionDto.getId();
         String nameDescription = productDescriptionDto.getName();
-        String description = productDescriptionDto.getDescription( );
+        String description = productDescriptionDto.getDescription();
         ProductDescriptionEntity productDescriptionEntity = new ProductDescriptionEntity(nameDescription, description);
         productDescriptionEntity.setId(productDescriptionId);
         return productDescriptionEntity;
     }
 
     @Override
-    public boolean block(List<Integer> ids, String description) {
-
+    public boolean block(List<Long> ids, String description) {
         return false;
     }
 }

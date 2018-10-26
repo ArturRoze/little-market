@@ -4,7 +4,7 @@ import java.util.List;
 
 public class BlockRequestEntity {
 
-    private List<Integer> ids;
+    private List<Long> ids;
 
     private String blockReason;
 
@@ -13,17 +13,17 @@ public class BlockRequestEntity {
     public BlockRequestEntity() {
     }
 
-    public BlockRequestEntity(List<Integer> ids, String blockReason, ProductsType productsType) {
+    public BlockRequestEntity(List<Long> ids, String blockReason, ProductsType productsType) {
         this.ids = ids;
         this.blockReason = blockReason;
         this.productsType = productsType;
     }
 
-    public List<Integer> getIds() {
+    public List<Long> getIds() {
         return ids;
     }
 
-    public void setIds(List<Integer> ids) {
+    public void setIds(List<Long> ids) {
         this.ids = ids;
     }
 
