@@ -1,8 +1,7 @@
 package com.app.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -12,4 +11,38 @@ public class UserEntity extends BasicUser {
     private String firstName;
     @Column
     private String lastName;
+    @OneToMany(mappedBy = "client_order", cascade = CascadeType.ALL)
+    private List<OrderEntity> userOrders;
+
+    public UserEntity() {
+    }
+
+    public UserEntity(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public List<OrderEntity> getUserOrders() {
+        return userOrders;
+    }
+
+    public void setUserOrders(List<OrderEntity> userOrders) {
+        this.userOrders = userOrders;
+    }
 }

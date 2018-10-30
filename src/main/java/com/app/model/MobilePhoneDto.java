@@ -3,7 +3,7 @@ package com.app.model;
 public class MobilePhoneDto {
 
     private String serialNumber;
-    private Integer group;
+    private Integer group; // don't remember wtf )
     private String model;
     private Double price;
     private ProductDescriptionDto productDescription;
