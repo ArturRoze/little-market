@@ -41,11 +41,15 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
         return savedMobilePhoneEntity.getId() != null;
     }
 
+    //TODO
     @Override
     public MobilePhoneEntity updateProduct(MobilePhoneDto mobilePhoneDto, Long id) {
-        MobilePhoneEntity mobilePhoneEntity = convertToMobilePhoneEntity(mobilePhoneDto);
-        mobilePhoneEntity.setId(id);
-        return mobilePhoneRepository.update(mobilePhoneEntity);
+        MobilePhoneEntity mobilePhoneEntityFromDb = mobilePhoneRepository.readById(id);
+        String serialNumber = mobilePhoneDto.getSerialNumber();
+        if (serialNumber != null){
+            mobilePhoneEntityFromDb.setSerialNumber(serialNumber);
+        }
+        return mobilePhoneRepository.update(mobilePhoneEntityFromDb);
     }
 
     @Override
@@ -54,18 +58,25 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
     }
 
     @Override
+    public MobilePhoneEntity getProductById(Long id) {
+        return mobilePhoneRepository.readById(id);
+    }
+
+    @Override
     public List<MobilePhoneEntity> getAllProductsByModel(String model) {
         return mobilePhoneRepository.readAllByModel(model);
     }
 
     @Override
-    public void deleteProduct(MobilePhoneEntity mobilePhoneEntity) {
-        mobilePhoneRepository.delete(mobilePhoneEntity);
-    }
-
-    @Override
     public void deleteById(Long id) {
         mobilePhoneRepository.deleteById(id);
+    }
+
+    //TODO
+    @Override
+    public int block(List<Long> ids, String description) {
+        return mobilePhoneRepository.blockProductsWithIds(ids, description);
+
     }
 
     private MobilePhoneEntity convertToMobilePhoneEntity(MobilePhoneDto mobilePhoneDto) {
@@ -96,10 +107,5 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
         ProductDescriptionEntity productDescriptionEntity = new ProductDescriptionEntity(nameDescription, description);
         productDescriptionEntity.setId(productDescriptionId);
         return productDescriptionEntity;
-    }
-
-    @Override
-    public boolean block(List<Long> ids, String description) {
-        return false;
     }
 }

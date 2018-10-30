@@ -12,7 +12,7 @@ public interface MobilePhoneService extends BlockProduct{
     boolean addProduct(MobilePhoneDto mobilePhoneDto);
     MobilePhoneEntity updateProduct(MobilePhoneDto mobilePhoneDto, Long id);
     List<MobilePhoneEntity> getAllProducts();
+    MobilePhoneEntity getProductById(Long id);
     List<MobilePhoneEntity> getAllProductsByModel(String model);
-    void deleteProduct(MobilePhoneEntity mobilePhoneEntity);
     void deleteById(Long id);
 }

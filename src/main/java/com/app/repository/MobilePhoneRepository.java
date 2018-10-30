@@ -11,6 +11,6 @@ public interface MobilePhoneRepository {
     List<MobilePhoneEntity> readAllByModel(String model);
     List<MobilePhoneEntity> readAll();
     MobilePhoneEntity update(MobilePhoneEntity product);
-    void delete(MobilePhoneEntity product);
     void deleteById(Long id);
+    int blockProductsWithIds(List<Long> ids, String description);
 }

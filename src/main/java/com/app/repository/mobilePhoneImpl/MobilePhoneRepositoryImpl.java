@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -31,14 +30,14 @@ public class MobilePhoneRepositoryImpl implements MobilePhoneRepository {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public MobilePhoneEntity readById(Long id) {
         LOGGER.info("read product with id: {} ", id);
         return entityManager.find(MobilePhoneEntity.class, id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<MobilePhoneEntity> readAllByModel(String model) {
         LOGGER.info("read product with model: {} ", model);
         TypedQuery<MobilePhoneEntity> mobilePhoneEntity = entityManager.createNamedQuery("get_all_mobilePhones_by_model", MobilePhoneEntity.class);
@@ -48,7 +47,7 @@ public class MobilePhoneRepositoryImpl implements MobilePhoneRepository {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<MobilePhoneEntity> readAll() {
         TypedQuery<MobilePhoneEntity> mobilePhoneEntity = entityManager.createNamedQuery("get_all_mobilePhones", MobilePhoneEntity.class);
         LOGGER.info("read all product: {} ", mobilePhoneEntity);
@@ -65,20 +64,19 @@ public class MobilePhoneRepositoryImpl implements MobilePhoneRepository {
 
     @Override
     @Transactional
-    public void delete(MobilePhoneEntity mobilePhoneEntity) {
-        entityManager.remove(mobilePhoneEntity);
-        LOGGER.info("{} was deleted", mobilePhoneEntity);
-    }
-
-    @Override
-    @Transactional
     public void deleteById(Long id) {
         MobilePhoneEntity mobilePhoneEntity = readById(id);
         if (mobilePhoneEntity != null) {
-            entityManager.remove(id);
+            entityManager.remove(mobilePhoneEntity);
             LOGGER.info("product with id: {} was deleted", id);
         } else {
             LOGGER.info("product with id: {} not exist", id);
         }
+    }
+
+    @Override
+    @Transactional
+    public int blockProductsWithIds(List<Long> ids, String description) {
+        return entityManager.createNamedQuery("update_mobilePhones_by_ids").setParameter("ids", ids).executeUpdate();
     }
 }

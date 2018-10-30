@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface BlockProduct {
 
-    boolean block(List<Long> ids, String description);
+    int block(List<Long> ids, String description);
 }

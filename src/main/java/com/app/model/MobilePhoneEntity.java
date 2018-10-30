@@ -7,7 +7,8 @@ import java.util.Objects;
 @Table(name="mobile_phone")
 @NamedQueries({
         @NamedQuery(query = "select mph from MobilePhoneEntity mph join mph.productDescriptionEntity join mph.shipmentEntity", name = "get_all_mobilePhones"),
-        @NamedQuery(query = "select mph from MobilePhoneEntity mph where mph.model = :model", name = "get_all_mobilePhones_by_model")
+        @NamedQuery(query = "select mph from MobilePhoneEntity mph where mph.model = :model", name = "get_all_mobilePhones_by_model"),
+        @NamedQuery(query = "update MobilePhoneEntity mph set mph.blocked = true where mph.id in :ids", name = "update_mobilePhones_by_ids")
 })
 public class MobilePhoneEntity {
     @Id

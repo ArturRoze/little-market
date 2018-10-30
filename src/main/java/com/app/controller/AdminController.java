@@ -1,6 +1,6 @@
 package com.app.controller;
 
-import com.app.model.BlockRequestEntity;
+import com.app.model.BlockRequestDto;
 import com.app.model.MobilePhoneDto;
 import com.app.model.MobilePhoneEntity;
 import com.app.service.MobilePhoneService;
@@ -46,18 +46,16 @@ public class AdminController {
         return mobilePhoneService.getAllProducts();
     }
 
+    @GetMapping("/read/{id}")
+    public MobilePhoneEntity readById(@PathVariable long id) {
+        LOGGER.info("read product by id: ", id);
+        return mobilePhoneService.getProductById(id);
+    }
+
     @GetMapping("/models/{model}")
     public List<MobilePhoneEntity> getAllProductsByModel(@PathVariable String model) {
         LOGGER.info("read all products by model: {}", model);
         return mobilePhoneService.getAllProductsByModel(model);
-    }
-
-    @PostMapping("/delete")
-    public ResponseEntity deleteProduct(@RequestBody MobilePhoneEntity mobilePhoneEntity) {
-        LOGGER.info("income request: {}", mobilePhoneEntity);
-        mobilePhoneService.deleteProduct(mobilePhoneEntity);
-        LOGGER.info("Product was deleted");
-        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/delete/{id}")
@@ -69,10 +67,10 @@ public class AdminController {
     }
 
     @PostMapping("/block")
-    public ResponseEntity blockProduct(@RequestBody BlockRequestEntity blockRequestEntity) {
-        LOGGER.info("income request: {}", blockRequestEntity);
-        List<Long> ids = blockRequestEntity.getIds();
-        String blockReason = blockRequestEntity.getBlockReason();
+    public ResponseEntity blockProduct(@RequestBody BlockRequestDto blockRequestDto) {
+        LOGGER.info("income request: {}", blockRequestDto);
+        List<Long> ids = blockRequestDto.getIds();
+        String blockReason = blockRequestDto.getBlockReason();
         mobilePhoneService.block(ids, blockReason);
         return new ResponseEntity(HttpStatus.OK);
     }
