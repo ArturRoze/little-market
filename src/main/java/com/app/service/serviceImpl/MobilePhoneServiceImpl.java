@@ -41,14 +41,10 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
         return savedMobilePhoneEntity.getId() != null;
     }
 
-    //TODO
     @Override
     public MobilePhoneEntity updateProduct(MobilePhoneDto mobilePhoneDto, Long id) {
         MobilePhoneEntity mobilePhoneEntityFromDb = mobilePhoneRepository.readById(id);
-        String serialNumber = mobilePhoneDto.getSerialNumber();
-        if (serialNumber != null){
-            mobilePhoneEntityFromDb.setSerialNumber(serialNumber);
-        }
+        changeFieldsMobileDtoToMobileEntity(mobilePhoneDto, mobilePhoneEntityFromDb);
         return mobilePhoneRepository.update(mobilePhoneEntityFromDb);
     }
 
@@ -107,5 +103,43 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
         ProductDescriptionEntity productDescriptionEntity = new ProductDescriptionEntity(nameDescription, description);
         productDescriptionEntity.setId(productDescriptionId);
         return productDescriptionEntity;
+    }
+
+    private void changeFieldsMobileDtoToMobileEntity(MobilePhoneDto mobilePhoneDto, MobilePhoneEntity mobilePhoneEntityFromDb) {
+        String serialNumber = mobilePhoneDto.getSerialNumber();
+        if (serialNumber != null) {
+            mobilePhoneEntityFromDb.setSerialNumber(serialNumber);
+        }
+        String model = mobilePhoneDto.getModel();
+        if (model != null) {
+            mobilePhoneEntityFromDb.setModel(model);
+        }
+        Double price = mobilePhoneDto.getPrice();
+        if (price != null) {
+            mobilePhoneEntityFromDb.setPrice(price);
+        }
+        ProductDescriptionDto productDescriptionDto = mobilePhoneDto.getProductDescription();
+        if (productDescriptionDto != null) {
+            ProductDescriptionEntity productDescriptionEntity = mobilePhoneEntityFromDb.getProductDescriptionEntity();
+            String name = productDescriptionDto.getName();
+            if (name != null) {
+                productDescriptionEntity.setName(name);
+            }
+            String description = productDescriptionDto.getDescription();
+            if (description != null) {
+                productDescriptionEntity.setDescription(description);
+            }
+        }
+        ShipmentDto shipmentDto = mobilePhoneDto.getShipment();
+        if (shipmentDto != null) {
+            ShipmentEntity shipmentEntity = mobilePhoneEntityFromDb.getShipmentEntity();
+            String description = shipmentDto.getDescription();
+            if (description != null) {
+                shipmentEntity.setDescription(description);
+            }
+            String incomeDate = shipmentDto.getIncomeDate();
+            Timestamp timestampDate = DateConverterUtil.convertStringDateToTimestamp(incomeDate);
+            shipmentEntity.setIncomeDate(timestampDate);
+        }
     }
 }
