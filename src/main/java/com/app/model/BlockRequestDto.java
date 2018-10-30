@@ -5,9 +5,7 @@ import java.util.List;
 public class BlockRequestDto {
 
     private List<Long> ids;
-
     private String blockReason;
-
     private ProductsType productsType;
 
     public BlockRequestDto() {

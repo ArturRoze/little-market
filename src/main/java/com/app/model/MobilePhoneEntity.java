@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name="mobile_phone")
+@Table(name = "mobile_phone")
 @NamedQueries({
         @NamedQuery(query = "select mph from MobilePhoneEntity mph join mph.productDescriptionEntity join mph.shipmentEntity", name = "get_all_mobilePhones"),
         @NamedQuery(query = "select mph from MobilePhoneEntity mph where mph.model = :model", name = "get_all_mobilePhones_by_model"),

@@ -68,7 +68,7 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
         mobilePhoneRepository.deleteById(id);
     }
 
-    //TODO
+    //TODO description not use
     @Override
     public int block(List<Long> ids, String description) {
         return mobilePhoneRepository.blockProductsWithIds(ids, description);

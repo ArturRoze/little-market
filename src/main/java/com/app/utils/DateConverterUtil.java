@@ -14,13 +14,13 @@ public class DateConverterUtil {
         return DateTimeFormatter.ofPattern(PATTERN);
     }
 
-    public static Timestamp convertStringDateToTimestamp(String incomeDate){
+    public static Timestamp convertStringDateToTimestamp(String incomeDate) {
         DateTimeFormatter formatter = getFormatter();
         LocalDateTime parsedDate = LocalDateTime.parse(incomeDate, formatter);
         return valueOf(parsedDate);
     }
 
-    public static String convertTimestampDateToString(Timestamp incomeDate){
+    public static String convertTimestampDateToString(Timestamp incomeDate) {
         DateTimeFormatter formatter = getFormatter();
         LocalDateTime dateTime = incomeDate.toLocalDateTime();
         return dateTime.format(formatter);

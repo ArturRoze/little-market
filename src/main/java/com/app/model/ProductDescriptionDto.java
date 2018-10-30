@@ -1,13 +1,9 @@
 package com.app.model;
 
-import javax.persistence.*;
-
 public class ProductDescriptionDto {
 
     private Long id;
-
     private String name;
-
     private String description;
 
     public Long getId() {

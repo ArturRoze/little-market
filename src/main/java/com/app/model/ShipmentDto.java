@@ -1,13 +1,9 @@
 package com.app.model;
 
-import java.sql.Timestamp;
-
 public class ShipmentDto {
 
     private Long id;
-
     private String description;
-
     private String incomeDate;
 
     public Long getId() {

@@ -3,15 +3,10 @@ package com.app.model;
 public class MobilePhoneDto {
 
     private String serialNumber;
-
     private Integer group;
-
     private String model;
-
     private Double price;
-
     private ProductDescriptionDto productDescription;
-
     private ShipmentDto shipment;
 
     public String getSerialNumber() {
