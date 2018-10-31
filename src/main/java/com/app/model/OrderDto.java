@@ -1,5 +1,7 @@
 package com.app.model;
 
+import java.util.List;
+
 public class OrderDto {
 
     private String model;

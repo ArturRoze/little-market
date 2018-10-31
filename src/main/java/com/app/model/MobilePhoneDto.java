@@ -2,27 +2,18 @@ package com.app.model;
 
 public class MobilePhoneDto {
 
-    private String serialNumber;
-    private Integer group; // don't remember wtf )
+    private String sku; //stock keeping unit
     private String model;
     private Double price;
     private ProductDescriptionDto productDescription;
     private ShipmentDto shipment;
 
-    public String getSerialNumber() {
-        return serialNumber;
+    public String getSku() {
+        return sku;
     }
 
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public Integer getGroup() {
-        return group;
-    }
-
-    public void setGroup(Integer group) {
-        this.group = group;
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getModel() {
@@ -60,8 +51,7 @@ public class MobilePhoneDto {
     @Override
     public String toString() {
         return "MobilePhoneDto{" +
-                "serialNumber='" + serialNumber + '\'' +
-                ", group=" + group +
+                "sku='" + sku + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", productDescriptionDto=" + productDescription +

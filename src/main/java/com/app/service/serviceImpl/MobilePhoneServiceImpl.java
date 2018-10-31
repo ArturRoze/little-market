@@ -76,7 +76,7 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
     }
 
     private MobilePhoneEntity convertToMobilePhoneEntity(MobilePhoneDto mobilePhoneDto) {
-        String serialNumber = mobilePhoneDto.getSerialNumber();
+        String serialNumber = mobilePhoneDto.getSku();
         String model = mobilePhoneDto.getModel();
         Double price = mobilePhoneDto.getPrice();
         ProductDescriptionEntity productDescriptionEntity = getProductDescriptionFromDto(mobilePhoneDto);
@@ -106,9 +106,9 @@ public class MobilePhoneServiceImpl implements MobilePhoneService {
     }
 
     private void changeFieldsMobileDtoToMobileEntity(MobilePhoneDto mobilePhoneDto, MobilePhoneEntity mobilePhoneEntityFromDb) {
-        String serialNumber = mobilePhoneDto.getSerialNumber();
+        String serialNumber = mobilePhoneDto.getSku();
         if (serialNumber != null) {
-            mobilePhoneEntityFromDb.setSerialNumber(serialNumber);
+            mobilePhoneEntityFromDb.setSku(serialNumber);
         }
         String model = mobilePhoneDto.getModel();
         if (model != null) {

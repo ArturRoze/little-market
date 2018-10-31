@@ -15,15 +15,15 @@ public class MobilePhoneEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String serialNumber;
+    private String sku; //stock keeping unit
     @Column
     private String model;
     @Column
     private Double price;
     @Column
-    private boolean blocked;
+    private boolean disabled;
     @Column
-    private boolean isSold;
+    private boolean sold;
     @ManyToOne(cascade = CascadeType.ALL)
     private ProductDescriptionEntity productDescriptionEntity;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -32,12 +32,12 @@ public class MobilePhoneEntity {
     public MobilePhoneEntity() {
     }
 
-    public MobilePhoneEntity(String serialNumber, String model, Double price, boolean blocked, boolean isSold, ProductDescriptionEntity productDescriptionEntity, ShipmentEntity shipmentEntity) {
-        this.serialNumber = serialNumber;
+    public MobilePhoneEntity(String sku, String model, Double price, boolean disabled, boolean sold, ProductDescriptionEntity productDescriptionEntity, ShipmentEntity shipmentEntity) {
+        this.sku = sku;
         this.model = model;
         this.price = price;
-        this.blocked = blocked;
-        this.isSold = isSold;
+        this.disabled = disabled;
+        this.sold = sold;
         this.productDescriptionEntity = productDescriptionEntity;
         this.shipmentEntity = shipmentEntity;
     }
@@ -50,12 +50,12 @@ public class MobilePhoneEntity {
         this.id = id;
     }
 
-    public String getSerialNumber() {
-        return serialNumber;
+    public String getSku() {
+        return sku;
     }
 
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getModel() {
@@ -74,20 +74,20 @@ public class MobilePhoneEntity {
         this.price = price;
     }
 
-    public boolean isBlocked() {
-        return blocked;
+    public boolean isDisabled() {
+        return disabled;
     }
 
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 
     public boolean isSold() {
-        return isSold;
+        return sold;
     }
 
     public void setSold(boolean sold) {
-        isSold = sold;
+        this.sold = sold;
     }
 
     public ProductDescriptionEntity getProductDescriptionEntity() {
@@ -111,10 +111,10 @@ public class MobilePhoneEntity {
         if (this == o) return true;
         if (!(o instanceof MobilePhoneEntity)) return false;
         MobilePhoneEntity that = (MobilePhoneEntity) o;
-        return isBlocked() == that.isBlocked() &&
+        return isDisabled() == that.isDisabled() &&
                 isSold() == that.isSold() &&
                 getId().equals(that.getId()) &&
-                getSerialNumber().equals(that.getSerialNumber()) &&
+                getSku().equals(that.getSku()) &&
                 getModel().equals(that.getModel()) &&
                 getPrice().equals(that.getPrice()) &&
                 getProductDescriptionEntity().equals(that.getProductDescriptionEntity()) &&
@@ -123,18 +123,18 @@ public class MobilePhoneEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSerialNumber(), getModel(), getPrice(), isBlocked(), isSold(), getProductDescriptionEntity(), getShipmentEntity());
+        return Objects.hash(getId(), getSku(), getModel(), getPrice(), isDisabled(), isSold(), getProductDescriptionEntity(), getShipmentEntity());
     }
 
     @Override
     public String toString() {
         return "MobilePhoneEntity{" +
                 "id=" + id +
-                ", serialNumber='" + serialNumber + '\'' +
+                ", sku='" + sku + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +
-                ", blocked=" + blocked +
-                ", isSold=" + isSold +
+                ", disabled=" + disabled +
+                ", sold=" + sold +
                 ", productDescriptionEntity=" + productDescriptionEntity +
                 ", shipmentEntity=" + shipmentEntity +
                 '}';
