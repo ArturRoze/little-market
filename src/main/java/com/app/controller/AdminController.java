@@ -1,9 +1,9 @@
 package com.app.controller;
 
 import com.app.model.BlockRequestDto;
-import com.app.model.MobilePhoneDto;
-import com.app.model.MobilePhoneEntity;
-import com.app.service.MobilePhoneService;
+import com.app.model.ProductDto;
+import com.app.model.ProductEntity;
+import com.app.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,50 +18,50 @@ import java.util.List;
 public class AdminController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private final MobilePhoneService mobilePhoneService;
+    private final ProductService productService;
 
     @Autowired
-    public AdminController(MobilePhoneService mobilePhoneService) {
+    public AdminController(ProductService productService) {
         LOGGER.info("create AdminController");
-        this.mobilePhoneService = mobilePhoneService;
+        this.productService = productService;
     }
 
     @PostMapping("/add")
-    public ResponseEntity addProduct(@RequestBody MobilePhoneDto mobilePhoneDto) {
-        LOGGER.info("income request: {}", mobilePhoneDto);
-        LOGGER.info("resultOfAdd: {}", mobilePhoneService.addProduct(mobilePhoneDto));
+    public ResponseEntity addProduct(@RequestBody ProductDto productDto) {
+        LOGGER.info("income request: {}", productDto);
+        LOGGER.info("resultOfAdd: {}", productService.addProduct(productDto));
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity updateProduct(@RequestBody MobilePhoneDto mobilePhoneDto, @PathVariable long id) {
-        LOGGER.info("income request: {} with id: {}", mobilePhoneDto, id);
-        LOGGER.info("resultOfUpdate: {}", mobilePhoneService.updateProduct(mobilePhoneDto, id));
+    public ResponseEntity updateProduct(@RequestBody ProductDto productDto, @PathVariable long id) {
+        LOGGER.info("income request: {} with id: {}", productDto, id);
+        LOGGER.info("resultOfUpdate: {}", productService.updateProduct(productDto, id));
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/readAll")
-    public List<MobilePhoneEntity> readAll() {
+    public List<ProductEntity> readAll() {
         LOGGER.info("read all product...");
-        return mobilePhoneService.getAllProducts();
+        return productService.getAllProducts();
     }
 
     @GetMapping("/read/{id}")
-    public MobilePhoneEntity readById(@PathVariable long id) {
+    public ProductEntity readById(@PathVariable long id) {
         LOGGER.info("read product by id: ", id);
-        return mobilePhoneService.getProductById(id);
+        return productService.getProductById(id);
     }
 
-    @GetMapping("/models/{model}")
-    public List<MobilePhoneEntity> getAllProductsByModel(@PathVariable String model) {
-        LOGGER.info("read all products by model: {}", model);
-        return mobilePhoneService.getAllProductsByModel(model);
+    @GetMapping("/titles/{title}")
+    public List<ProductEntity> getAllProductsByModel(@PathVariable String title) {
+        LOGGER.info("read all products by title: {}", title);
+        return productService.getAllProductsByTitle(title);
     }
 
     @PostMapping("/delete/{id}")
     public ResponseEntity deleteProductById(@PathVariable long id) {
         LOGGER.info("income request with id: {}", id);
-        mobilePhoneService.deleteById(id);
+        productService.deleteById(id);
         LOGGER.info("Product with id: {} was deleted", id);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -71,7 +71,7 @@ public class AdminController {
         LOGGER.info("income request: {}", blockRequestDto);
         List<Long> ids = blockRequestDto.getIds();
         String blockReason = blockRequestDto.getBlockReason();
-        mobilePhoneService.block(ids, blockReason);
+        productService.block(ids, blockReason);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

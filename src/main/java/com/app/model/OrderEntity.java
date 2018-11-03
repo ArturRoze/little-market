@@ -10,18 +10,26 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String model;
+    private String title;
     @Column
     private Integer count;
     @Column
     private Double priceOrder;
     @Column
     private Timestamp creationDate;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
     public OrderEntity() {
+    }
+
+    public OrderEntity(String title, Integer count, Double priceOrder, Timestamp creationDate, UserEntity user) {
+        this.title = title;
+        this.count = count;
+        this.priceOrder = priceOrder;
+        this.creationDate = creationDate;
+        this.user = user;
     }
 
     public Long getId() {
@@ -32,12 +40,12 @@ public class OrderEntity {
         this.id = id;
     }
 
-    public String getModel() {
-        return model;
+    public String getTitle() {
+        return title;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Integer getCount() {
@@ -76,7 +84,7 @@ public class OrderEntity {
     public String toString() {
         return "OrderEntity{" +
                 "id=" + id +
-                ", model='" + model + '\'' +
+                ", title='" + title + '\'' +
                 ", count=" + count +
                 ", priceOrder=" + priceOrder +
                 ", creationDate=" + creationDate +

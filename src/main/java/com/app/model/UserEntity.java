@@ -11,7 +11,7 @@ public class UserEntity extends BasicUser {
     private String firstName;
     @Column
     private String lastName;
-    @OneToMany(mappedBy = "client_order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<OrderEntity> userOrders;
 
     public UserEntity() {

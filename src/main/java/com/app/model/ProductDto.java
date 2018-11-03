@@ -1,27 +1,27 @@
 package com.app.model;
 
-public class MobilePhoneDto {
+public class ProductDto {
 
-    private String sku; //stock keeping unit
-    private String model;
+    private String uuid;
+    private String title;
     private Double price;
     private ProductDescriptionDto productDescription;
     private ShipmentDto shipment;
 
-    public String getSku() {
-        return sku;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setSku(String sku) {
-        this.sku = sku;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public String getModel() {
-        return model;
+    public String getTitle() {
+        return title;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Double getPrice() {
@@ -50,9 +50,9 @@ public class MobilePhoneDto {
 
     @Override
     public String toString() {
-        return "MobilePhoneDto{" +
-                "sku='" + sku + '\'' +
-                ", model='" + model + '\'' +
+        return "ProductDto{" +
+                "uuid='" + uuid + '\'' +
+                ", title='" + title + '\'' +
                 ", price=" + price +
                 ", productDescriptionDto=" + productDescription +
                 ", shipmentDto=" + shipment +

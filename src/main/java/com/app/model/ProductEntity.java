@@ -4,20 +4,20 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "mobile_phone")
+@Table(name = "product")
 @NamedQueries({
-        @NamedQuery(query = "select mph from MobilePhoneEntity mph join mph.productDescriptionEntity join mph.shipmentEntity", name = "get_all_mobilePhones"),
-        @NamedQuery(query = "select mph from MobilePhoneEntity mph where mph.model = :model", name = "get_all_mobilePhones_by_model"),
-        @NamedQuery(query = "update MobilePhoneEntity mph set mph.blocked = true where mph.id in :ids", name = "update_mobilePhones_by_ids")
+        @NamedQuery(query = "select p from ProductEntity p join p.productDescriptionEntity join p.shipmentEntity", name = "get_all_products"),
+        @NamedQuery(query = "select p from ProductEntity p where p.title = :title", name = "get_all_products_by_title"),
+        @NamedQuery(query = "update ProductEntity p set p.disabled = true where p.id in :ids", name = "update_products_by_ids")
 })
-public class MobilePhoneEntity {
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
+    private String uuid;
     @Column
-    private String sku; //stock keeping unit
-    @Column
-    private String model;
+    private String title;
     @Column
     private Double price;
     @Column
@@ -29,12 +29,12 @@ public class MobilePhoneEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     private ShipmentEntity shipmentEntity;
 
-    public MobilePhoneEntity() {
+    public ProductEntity() {
     }
 
-    public MobilePhoneEntity(String sku, String model, Double price, boolean disabled, boolean sold, ProductDescriptionEntity productDescriptionEntity, ShipmentEntity shipmentEntity) {
-        this.sku = sku;
-        this.model = model;
+    public ProductEntity(String uuid, String title, Double price, boolean disabled, boolean sold, ProductDescriptionEntity productDescriptionEntity, ShipmentEntity shipmentEntity) {
+        this.uuid = uuid;
+        this.title = title;
         this.price = price;
         this.disabled = disabled;
         this.sold = sold;
@@ -50,20 +50,20 @@ public class MobilePhoneEntity {
         this.id = id;
     }
 
-    public String getSku() {
-        return sku;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setSku(String sku) {
-        this.sku = sku;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public String getModel() {
-        return model;
+    public String getTitle() {
+        return title;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Double getPrice() {
@@ -109,13 +109,13 @@ public class MobilePhoneEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MobilePhoneEntity)) return false;
-        MobilePhoneEntity that = (MobilePhoneEntity) o;
+        if (!(o instanceof ProductEntity)) return false;
+        ProductEntity that = (ProductEntity) o;
         return isDisabled() == that.isDisabled() &&
                 isSold() == that.isSold() &&
                 getId().equals(that.getId()) &&
-                getSku().equals(that.getSku()) &&
-                getModel().equals(that.getModel()) &&
+                getUuid().equals(that.getUuid()) &&
+                getTitle().equals(that.getTitle()) &&
                 getPrice().equals(that.getPrice()) &&
                 getProductDescriptionEntity().equals(that.getProductDescriptionEntity()) &&
                 getShipmentEntity().equals(that.getShipmentEntity());
@@ -123,15 +123,15 @@ public class MobilePhoneEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSku(), getModel(), getPrice(), isDisabled(), isSold(), getProductDescriptionEntity(), getShipmentEntity());
+        return Objects.hash(getId(), getUuid(), getTitle(), getPrice(), isDisabled(), isSold(), getProductDescriptionEntity(), getShipmentEntity());
     }
 
     @Override
     public String toString() {
-        return "MobilePhoneEntity{" +
+        return "ProductEntity{" +
                 "id=" + id +
-                ", sku='" + sku + '\'' +
-                ", model='" + model + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", title='" + title + '\'' +
                 ", price=" + price +
                 ", disabled=" + disabled +
                 ", sold=" + sold +

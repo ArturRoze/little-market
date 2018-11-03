@@ -1,19 +1,17 @@
 package com.app.model;
 
-import java.util.List;
-
 public class OrderDto {
 
-    private String model;
+    private String title;
     private Integer count;
     private String creationDate;
 
-    public String getModel() {
-        return model;
+    public String getTitle() {
+        return title;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Integer getCount() {

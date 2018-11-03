@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @MappedSuperclass
-abstract class BasicUser {
+public abstract class BasicUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
