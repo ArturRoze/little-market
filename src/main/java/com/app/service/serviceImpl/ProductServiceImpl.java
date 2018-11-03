@@ -2,6 +2,7 @@ package com.app.service.serviceImpl;
 
 import com.app.model.*;
 import com.app.repository.ProductRepository;
+import com.app.service.CategoryService;
 import com.app.service.ProductService;
 import com.app.utils.DateConverterUtil;
 import org.slf4j.Logger;
@@ -17,10 +18,12 @@ public class ProductServiceImpl implements ProductService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService) {
         this.productRepository = productRepository;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -68,7 +71,6 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-    //TODO description not use
     @Override
     public int block(List<Long> ids, String description) {
         return productRepository.blockProductsWithIds(ids, description);
@@ -76,12 +78,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductEntity convertToProductEntity(ProductDto productDto) {
-        String sku = productDto.getUuid();
+        SubCategoryDto subCategoryDto = productDto.getSubCategory();
+        String name = subCategoryDto.getName();
+        SubCategoryEntity subCategoryEntity = categoryService.getSubCategoryName(name);
         String title = productDto.getTitle();
         Double price = productDto.getPrice();
+        String disabledReason = productDto.getDisabledReason();
         ProductDescriptionEntity productDescriptionEntity = getProductDescriptionFromDto(productDto);
         ShipmentEntity shipmentEntity = getShipmentFromDto(productDto);
-        return new ProductEntity(sku, title, price, false, false, productDescriptionEntity, shipmentEntity);
+        return new ProductEntity(subCategoryEntity, title, price, false, disabledReason,false, productDescriptionEntity, shipmentEntity);
     }
 
     private ShipmentEntity getShipmentFromDto(ProductDto productDto) {
@@ -106,9 +111,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void changeFieldsProductDtoToProductEntity(ProductDto productDto, ProductEntity productEntityFromDb) {
-        String sku = productDto.getUuid();
-        if (sku != null) {
-            productEntityFromDb.setUuid(sku);
+        String uuid = productDto.getUuid();
+        if (uuid != null) {
+            productEntityFromDb.setUuid(uuid);
+        }
+        SubCategoryDto subCategoryDto = productDto.getSubCategory();
+        if (subCategoryDto != null){
+            SubCategoryEntity subCategoryEntity = productEntityFromDb.getSubCategoryEntity();
+            String nameSubCategoryDto = subCategoryDto.getName();
+            if (nameSubCategoryDto != null){
+                subCategoryEntity.setName(nameSubCategoryDto);
+            }
+            CategoryDto categoryDto = subCategoryDto.getCategory();
+            if (categoryDto != null){
+                String nameCategoryDto = categoryDto.getName();
+                if (nameCategoryDto != null){
+                    subCategoryEntity.getCategoryEntity().setName(nameCategoryDto);
+                }
+            }
         }
         String title = productDto.getTitle();
         if (title != null) {

@@ -2,26 +2,31 @@ package com.app.model;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "product")
 @NamedQueries({
         @NamedQuery(query = "select p from ProductEntity p join p.productDescriptionEntity join p.shipmentEntity", name = "get_all_products"),
         @NamedQuery(query = "select p from ProductEntity p where p.title = :title", name = "get_all_products_by_title"),
-        @NamedQuery(query = "update ProductEntity p set p.disabled = true where p.id in :ids", name = "update_products_by_ids")
+        @NamedQuery(query = "update ProductEntity p set p.disabled = true, p.disabledReason = :description where p.id in :ids", name = "disable_products_by_ids_with_reason")
 })
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable = false)
-    private String uuid;
+    private String uuid = UUID.randomUUID().toString();
+    @ManyToOne(cascade = CascadeType.ALL)
+    private SubCategoryEntity subCategoryEntity;
     @Column
     private String title;
     @Column
     private Double price;
     @Column
     private boolean disabled;
+    @Column(name = "disabled_reason")
+    private String disabledReason;
     @Column
     private boolean sold;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -32,11 +37,12 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(String uuid, String title, Double price, boolean disabled, boolean sold, ProductDescriptionEntity productDescriptionEntity, ShipmentEntity shipmentEntity) {
-        this.uuid = uuid;
+    public ProductEntity(SubCategoryEntity subCategoryEntity, String title, Double price, boolean disabled, String disabledReason, boolean sold, ProductDescriptionEntity productDescriptionEntity, ShipmentEntity shipmentEntity) {
+        this.subCategoryEntity = subCategoryEntity;
         this.title = title;
         this.price = price;
         this.disabled = disabled;
+        this.disabledReason = disabledReason;
         this.sold = sold;
         this.productDescriptionEntity = productDescriptionEntity;
         this.shipmentEntity = shipmentEntity;
@@ -56,6 +62,14 @@ public class ProductEntity {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public SubCategoryEntity getSubCategoryEntity() {
+        return subCategoryEntity;
+    }
+
+    public void setSubCategoryEntity(SubCategoryEntity subCategoryEntity) {
+        this.subCategoryEntity = subCategoryEntity;
     }
 
     public String getTitle() {
@@ -80,6 +94,14 @@ public class ProductEntity {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public String getDisabledReason() {
+        return disabledReason;
+    }
+
+    public void setDisabledReason(String disabledReason) {
+        this.disabledReason = disabledReason;
     }
 
     public boolean isSold() {
@@ -109,34 +131,22 @@ public class ProductEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ProductEntity)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         ProductEntity that = (ProductEntity) o;
-        return isDisabled() == that.isDisabled() &&
-                isSold() == that.isSold() &&
-                getId().equals(that.getId()) &&
-                getUuid().equals(that.getUuid()) &&
-                getTitle().equals(that.getTitle()) &&
-                getPrice().equals(that.getPrice()) &&
-                getProductDescriptionEntity().equals(that.getProductDescriptionEntity()) &&
-                getShipmentEntity().equals(that.getShipmentEntity());
+        return disabled == that.disabled &&
+                sold == that.sold &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(uuid, that.uuid) &&
+                Objects.equals(subCategoryEntity, that.subCategoryEntity) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(price, that.price) &&
+                Objects.equals(disabledReason, that.disabledReason) &&
+                Objects.equals(productDescriptionEntity, that.productDescriptionEntity) &&
+                Objects.equals(shipmentEntity, that.shipmentEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUuid(), getTitle(), getPrice(), isDisabled(), isSold(), getProductDescriptionEntity(), getShipmentEntity());
-    }
-
-    @Override
-    public String toString() {
-        return "ProductEntity{" +
-                "id=" + id +
-                ", uuid='" + uuid + '\'' +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                ", disabled=" + disabled +
-                ", sold=" + sold +
-                ", productDescriptionEntity=" + productDescriptionEntity +
-                ", shipmentEntity=" + shipmentEntity +
-                '}';
+        return Objects.hash(id, uuid, subCategoryEntity, title, price, disabled, disabledReason, sold, productDescriptionEntity, shipmentEntity);
     }
 }

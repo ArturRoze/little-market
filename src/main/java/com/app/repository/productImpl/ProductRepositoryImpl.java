@@ -78,6 +78,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     @Transactional
     public int blockProductsWithIds(List<Long> ids, String description) {
-        return entityManager.createNamedQuery("update_products_by_ids").setParameter("ids", ids).executeUpdate();
+        return entityManager.createNamedQuery("disable_products_by_ids_with_reason")
+                .setParameter("ids", ids)
+                .setParameter("description", description)
+                .executeUpdate();
     }
 }

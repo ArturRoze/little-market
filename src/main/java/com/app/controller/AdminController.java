@@ -53,7 +53,7 @@ public class AdminController {
     }
 
     @GetMapping("/titles/{title}")
-    public List<ProductEntity> getAllProductsByModel(@PathVariable String title) {
+    public List<ProductEntity> getAllProductsByTitle(@PathVariable String title) {
         LOGGER.info("read all products by title: {}", title);
         return productService.getAllProductsByTitle(title);
     }

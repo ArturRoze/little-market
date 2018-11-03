@@ -6,15 +6,15 @@ public class BlockRequestDto {
 
     private List<Long> ids;
     private String blockReason;
-    private ProductsType productsType;
+    private SubCategoryDto subCategory;
 
     public BlockRequestDto() {
     }
 
-    public BlockRequestDto(List<Long> ids, String blockReason, ProductsType productsType) {
+    public BlockRequestDto(List<Long> ids, String blockReason, SubCategoryDto subCategory) {
         this.ids = ids;
         this.blockReason = blockReason;
-        this.productsType = productsType;
+        this.subCategory = subCategory;
     }
 
     public List<Long> getIds() {
@@ -33,12 +33,12 @@ public class BlockRequestDto {
         this.blockReason = blockReason;
     }
 
-    public ProductsType getProductsType() {
-        return productsType;
+    public SubCategoryDto getSubCategory() {
+        return subCategory;
     }
 
-    public void setProductsType(ProductsType productsType) {
-        this.productsType = productsType;
+    public void setSubCategory(SubCategoryDto subCategory) {
+        this.subCategory = subCategory;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class BlockRequestDto {
         return "BlockRequestDto{" +
                 "ids=" + ids +
                 ", blockReason='" + blockReason + '\'' +
-                ", productsType=" + productsType +
+                ", subCategory=" + subCategory +
                 '}';
     }
 }

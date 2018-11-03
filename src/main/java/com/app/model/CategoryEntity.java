@@ -11,7 +11,7 @@ public class CategoryEntity {
     private Long id;
     @Column
     private String name;
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "categoryEntity", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<SubCategoryEntity> subCategories;
 
     public CategoryEntity() {

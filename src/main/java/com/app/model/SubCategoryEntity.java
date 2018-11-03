@@ -11,7 +11,7 @@ public class SubCategoryEntity {
     @Column
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity categoryEntity;
 
     public SubCategoryEntity() {
