@@ -138,6 +138,14 @@ public class ProductServiceImpl implements ProductService {
         if (price != null) {
             productEntityFromDb.setPrice(price);
         }
+        boolean disabled = productDto.getDisabled();
+        if (productEntityFromDb.isDisabled() != disabled){
+            productEntityFromDb.setDisabled(disabled);
+        }
+        String disabledReason = productDto.getDisabledReason();
+        if (disabledReason != null){
+            productEntityFromDb.setDisabledReason(disabledReason);
+        }
         ProductDescriptionDto productDescriptionDto = productDto.getProductDescription();
         if (productDescriptionDto != null) {
             ProductDescriptionEntity productDescriptionEntity = productEntityFromDb.getProductDescriptionEntity();

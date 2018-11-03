@@ -2,6 +2,7 @@ package com.app.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "client_order")
@@ -17,6 +18,9 @@ public class OrderEntity {
     private Double priceOrder;
     @Column
     private Timestamp creationDate;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "client_order_id")
+    private List<ProductEntity> products;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
@@ -24,11 +28,12 @@ public class OrderEntity {
     public OrderEntity() {
     }
 
-    public OrderEntity(String title, Integer count, Double priceOrder, Timestamp creationDate, UserEntity user) {
+    public OrderEntity(String title, Integer count, Double priceOrder, Timestamp creationDate, List<ProductEntity> products, UserEntity user) {
         this.title = title;
         this.count = count;
         this.priceOrder = priceOrder;
         this.creationDate = creationDate;
+        this.products = products;
         this.user = user;
     }
 
@@ -72,6 +77,14 @@ public class OrderEntity {
         this.creationDate = creationDate;
     }
 
+    public List<ProductEntity> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductEntity> products) {
+        this.products = products;
+    }
+
     public UserEntity getUser() {
         return user;
     }
@@ -88,6 +101,7 @@ public class OrderEntity {
                 ", count=" + count +
                 ", priceOrder=" + priceOrder +
                 ", creationDate=" + creationDate +
+                ", products=" + products +
                 ", user=" + user +
                 '}';
     }

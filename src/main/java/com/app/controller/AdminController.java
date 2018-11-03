@@ -66,8 +66,8 @@ public class AdminController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/block")
-    public ResponseEntity blockProduct(@RequestBody BlockRequestDto blockRequestDto) {
+    @PostMapping("/disable")
+    public ResponseEntity disableProduct(@RequestBody BlockRequestDto blockRequestDto) {
         LOGGER.info("income request: {}", blockRequestDto);
         List<Long> ids = blockRequestDto.getIds();
         String blockReason = blockRequestDto.getBlockReason();

@@ -1,7 +1,15 @@
 package com.app.model;
 
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+
 import java.util.List;
 
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class BlockRequestDto {
 
     private List<Long> ids;

@@ -6,21 +6,12 @@ public class ProductDto {
     private SubCategoryDto subCategory;
     private String title;
     private Double price;
+    private boolean disabled;
     private String disabledReason;
     private ProductDescriptionDto productDescription;
     private ShipmentDto shipment;
 
     public ProductDto() {
-    }
-
-    public ProductDto(String uuid, SubCategoryDto subCategory, String title, Double price, String disabledReason, ProductDescriptionDto productDescription, ShipmentDto shipment) {
-        this.uuid = uuid;
-        this.subCategory = subCategory;
-        this.title = title;
-        this.price = price;
-        this.disabledReason = disabledReason;
-        this.productDescription = productDescription;
-        this.shipment = shipment;
     }
 
     public String getUuid() {
@@ -55,6 +46,14 @@ public class ProductDto {
         this.price = price;
     }
 
+    public boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
     public String getDisabledReason() {
         return disabledReason;
     }
@@ -86,6 +85,7 @@ public class ProductDto {
                 ", subCategory=" + subCategory +
                 ", title='" + title + '\'' +
                 ", price=" + price +
+                ", disabled=" + disabled +
                 ", disabledReason='" + disabledReason + '\'' +
                 ", productDescription=" + productDescription +
                 ", shipment=" + shipment +
