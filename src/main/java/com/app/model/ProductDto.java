@@ -46,7 +46,7 @@ public class ProductDto {
         this.price = price;
     }
 
-    public boolean getDisabled() {
+    public boolean isDisabled() {
         return disabled;
     }
 
