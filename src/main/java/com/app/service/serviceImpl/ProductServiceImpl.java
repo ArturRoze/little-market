@@ -86,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
         String disabledReason = productDto.getDisabledReason();
         ProductDescriptionEntity productDescriptionEntity = getProductDescriptionFromDto(productDto);
         ShipmentEntity shipmentEntity = getShipmentFromDto(productDto);
-        return new ProductEntity(subCategoryEntity, title, price, false, disabledReason,false, productDescriptionEntity, shipmentEntity);
+        return new ProductEntity(subCategoryEntity, title, price, false, disabledReason, false, productDescriptionEntity, shipmentEntity);
     }
 
     private ShipmentEntity getShipmentFromDto(ProductDto productDto) {
@@ -116,16 +116,16 @@ public class ProductServiceImpl implements ProductService {
             productEntityFromDb.setUuid(uuid);
         }
         SubCategoryDto subCategoryDto = productDto.getSubCategory();
-        if (subCategoryDto != null){
+        if (subCategoryDto != null) {
             SubCategoryEntity subCategoryEntity = productEntityFromDb.getSubCategoryEntity();
             String nameSubCategoryDto = subCategoryDto.getName();
-            if (nameSubCategoryDto != null){
+            if (nameSubCategoryDto != null) {
                 subCategoryEntity.setName(nameSubCategoryDto);
             }
             CategoryDto categoryDto = subCategoryDto.getCategory();
-            if (categoryDto != null){
+            if (categoryDto != null) {
                 String nameCategoryDto = categoryDto.getName();
-                if (nameCategoryDto != null){
+                if (nameCategoryDto != null) {
                     subCategoryEntity.getCategoryEntity().setName(nameCategoryDto);
                 }
             }
@@ -139,11 +139,11 @@ public class ProductServiceImpl implements ProductService {
             productEntityFromDb.setPrice(price);
         }
         boolean disabled = productDto.isDisabled();
-        if (productEntityFromDb.isDisabled() != disabled){
+        if (productEntityFromDb.isDisabled() != disabled) {
             productEntityFromDb.setDisabled(disabled);
         }
         String disabledReason = productDto.getDisabledReason();
-        if (disabledReason != null){
+        if (disabledReason != null) {
             productEntityFromDb.setDisabledReason(disabledReason);
         }
         ProductDescriptionDto productDescriptionDto = productDto.getProductDescription();
