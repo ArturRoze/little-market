@@ -1,6 +1,11 @@
 package com.app.model;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,6 +14,9 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "sub_category")
+@NamedQueries({
+        @NamedQuery(query = "select sc from SubCategoryEntity sc where sc.name = :name", name = "get_subCategory_by_name")
+})
 public class SubCategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +27,6 @@ public class SubCategoryEntity {
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnore
     private CategoryEntity categoryEntity;
-
 }

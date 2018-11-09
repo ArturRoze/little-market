@@ -1,8 +1,7 @@
 package com.app.controller;
 
-import com.app.model.BlockRequestDto;
-import com.app.model.ProductDto;
-import com.app.model.ProductEntity;
+import com.app.model.*;
+import com.app.service.CategoryService;
 import com.app.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +18,12 @@ public class AdminController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public AdminController(ProductService productService) {
+    public AdminController(ProductService productService, CategoryService categoryService) {
         LOGGER.info("create AdminController");
+        this.categoryService = categoryService;
         this.productService = productService;
     }
 
@@ -73,5 +74,17 @@ public class AdminController {
         String blockReason = blockRequestDto.getBlockReason();
         productService.block(ids, blockReason);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{name}")
+    public CategoryEntity getCategoryByName(@PathVariable String name) {
+        LOGGER.info("get category by name: {}", name);
+        return categoryService.getCategoryByName(name);
+    }
+
+    @GetMapping("/subCategory/{name}")
+    public SubCategoryEntity getSubCategoryByName(@PathVariable String name) {
+        LOGGER.info("get subCategory by name: {}", name);
+        return categoryService.getSubCategoryName(name);
     }
 }
