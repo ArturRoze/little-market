@@ -1,7 +1,5 @@
 package com.app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +8,6 @@ import java.util.List;
 @Data
 @ToString(exclude = {"subCategories"})
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Entity
 @Table(name = "category")
 @NamedQueries({
@@ -25,4 +22,8 @@ public class CategoryEntity {
     private String name;
     @OneToMany(mappedBy = "categoryEntity", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<SubCategoryEntity> subCategories;
+
+    public CategoryEntity(String name) {
+        this.name = name;
+    }
 }

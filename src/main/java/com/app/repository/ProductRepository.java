@@ -12,6 +12,8 @@ public interface ProductRepository {
 
     List<ProductEntity> readAllByTitle(String title);
 
+    List<ProductEntity> readProductsByUuids(List<String> uuids);
+
     List<ProductEntity> readAll();
 
     ProductEntity update(ProductEntity product);
@@ -19,4 +21,6 @@ public interface ProductRepository {
     void deleteById(Long id);
 
     int blockProductsWithIds(List<Long> ids, String description);
+
+    void sellProducts(List<String> uuids);
 }

@@ -1,5 +1,7 @@
 package com.app.controller;
 
+import com.app.domain.BlockRequestDto;
+import com.app.domain.ProductDto;
 import com.app.model.*;
 import com.app.service.CategoryService;
 import com.app.service.ProductService;
@@ -41,7 +43,7 @@ public class AdminController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/readAll")
+    @GetMapping("/all")
     public List<ProductEntity> readAll() {
         LOGGER.info("read all product...");
         return productService.getAllProducts();

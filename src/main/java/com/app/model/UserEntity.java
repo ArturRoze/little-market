@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 public class UserEntity extends BasicUser {
-
     @Column
     private String firstName;
     @Column

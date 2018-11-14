@@ -1,7 +1,6 @@
 package com.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -11,7 +10,6 @@ import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Entity
 @Table(name = "sub_category")
 @NamedQueries({
@@ -29,4 +27,9 @@ public class SubCategoryEntity {
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnore
     private CategoryEntity categoryEntity;
+
+    public SubCategoryEntity(String name, CategoryEntity categoryEntity) {
+        this.name = name;
+        this.categoryEntity = categoryEntity;
+    }
 }

@@ -26,6 +26,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     @Transactional
     public ProductEntity save(ProductEntity productEntity) {
+        LOGGER.info("save product: {}", productEntity);
         entityManager.persist(productEntity);
         return productEntity;
     }
@@ -45,6 +46,16 @@ public class ProductRepositoryImpl implements ProductRepository {
         productEntity.setParameter("title", title);
         LOGGER.info("read all product: {} ", productEntity);
         return productEntity.getResultList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductEntity> readProductsByUuids(List<String> uuids) {
+        LOGGER.info("read products with uuids: {} ", uuids);
+        TypedQuery<ProductEntity> productByUuid = entityManager.createNamedQuery("get_products_by_uuids", ProductEntity.class);
+        productByUuid.setParameter("uuids", uuids);
+        LOGGER.info("read products: {} ", productByUuid);
+        return productByUuid.getResultList();
     }
 
     @Override
@@ -81,6 +92,14 @@ public class ProductRepositoryImpl implements ProductRepository {
         return entityManager.createNamedQuery("disable_products_by_ids_with_reason")
                 .setParameter("ids", ids)
                 .setParameter("description", description)
+                .executeUpdate();
+    }
+
+    @Override
+    @Transactional
+    public void sellProducts(List<String> uuids) {
+        entityManager.createNamedQuery("sell_products")
+                .setParameter("uuids", uuids)
                 .executeUpdate();
     }
 }

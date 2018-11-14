@@ -1,22 +1,26 @@
 package com.app.service.serviceImpl;
 
-import com.app.model.*;
+import com.app.domain.*;
+import com.app.model.ProductDescriptionEntity;
+import com.app.model.ProductEntity;
+import com.app.model.ShipmentEntity;
+import com.app.model.SubCategoryEntity;
 import com.app.repository.ProductRepository;
 import com.app.service.CategoryService;
 import com.app.service.ProductService;
 import com.app.utils.DateConverterUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
 
@@ -26,15 +30,39 @@ public class ProductServiceImpl implements ProductService {
         this.categoryService = categoryService;
     }
 
+    //TODO
     @Override
-    public List<ProductEntity> buyProduct(OrderEntity orderEntity) {
-        String titleOfProduct = orderEntity.getTitle();
-        Integer count = orderEntity.getCount();
-        List<ProductEntity> orderedProduct = productRepository.readAllByTitle(titleOfProduct);
-//        if (orderedProduct.isEmpty()){
-//            return orderedProduct;
-//        }
-        return orderedProduct;
+    public List<ProductEntity> buyProduct(OrderDto orderDto) {
+        List<String> uuidsFromOrder = orderDto.getProducts().stream()
+                .map(item -> item.getUuid())
+                .collect(Collectors.toList());
+        List<ProductEntity> productEntities = productRepository.readProductsByUuids(uuidsFromOrder);
+        if (productEntities != null) {
+            List<String> uuidsFromDb = productEntities.stream().map(item -> item.getUuid()).collect(Collectors.toList());
+            if (uuidsFromOrder.size() != uuidsFromDb.size()) {
+                List<String> unavailableUuids = new ArrayList<>();
+                for (int i = 0; i < uuidsFromOrder.size(); i++) {
+                    if (!uuidsFromDb.contains(uuidsFromOrder.get(i))){
+                        unavailableUuids.add(uuidsFromOrder.get(i));
+                    }
+                }
+                List<ProductEntity> unavailableProductEntities = productRepository.readProductsByUuids(unavailableUuids);
+                //TODO answer to user: "These products are no longer available" !!!
+            }
+            List<ProductEntity> soldProducts = productEntities.stream().filter(item -> item.isSold()).collect(Collectors.toList());
+            List<ProductEntity> disabledProducts = productEntities.stream().filter(item -> item.isDisabled()).collect(Collectors.toList());
+            if (soldProducts != null && !soldProducts.isEmpty()){
+                //TODO answer to user: "These products are sold" !!!
+            }
+            if (disabledProducts != null && !disabledProducts.isEmpty()){
+                //TODO answer to user: "These products are disabled" !!!
+            }
+            productEntities.forEach(item -> item.setSold(true));
+            List<String> collect = productEntities.stream().map(item -> item.getUuid()).collect(Collectors.toList());
+
+
+        }
+        return null;
     }
 
     @Override
@@ -57,6 +85,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductEntity> getAvailableProducts() {
+        List<ProductEntity> productEntities = productRepository.readAll();
+        return productEntities.stream()
+                .filter(item -> !item.isDisabled() && !item.isSold())
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ProductEntity getProductById(Long id) {
         return productRepository.readById(id);
     }
@@ -74,7 +110,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int block(List<Long> ids, String description) {
         return productRepository.blockProductsWithIds(ids, description);
-
     }
 
     private ProductEntity convertToProductEntity(ProductDto productDto) {

@@ -1,4 +1,4 @@
-package com.app.model;
+package com.app.domain;
 
 import lombok.Data;
 
@@ -8,8 +8,7 @@ import java.util.List;
 public class OrderDto {
 
     private String title;
-    private Integer count;
     private String creationDate;
-    private List<ProductDto> products;
+    private List<UserProductDto> products;
     private UserDto user;
 }

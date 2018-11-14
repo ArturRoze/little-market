@@ -27,7 +27,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         LOGGER.info("get subCategory by name: {}", name);
         TypedQuery<SubCategoryEntity> getSubCategoriesByName = entityManager.createNamedQuery("get_subCategory_by_name", SubCategoryEntity.class);
         getSubCategoriesByName.setParameter("name", name);
-        return getSubCategoriesByName.getResultList().get(0);
+        return getSubCategoriesByName.getSingleResult();
     }
 
     @Override
@@ -35,6 +35,6 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         LOGGER.info("get category by name: {}", name);
         TypedQuery<CategoryEntity> getCategoryByName = entityManager.createNamedQuery("get_category_by_name", CategoryEntity.class);
         getCategoryByName.setParameter("name", name);
-        return getCategoryByName.getResultList().get(0);
+        return getCategoryByName.getSingleResult();
     }
 }
