@@ -1,4 +1,4 @@
-package com.app.repository.productImpl;
+package com.app.repository.impl;
 
 import com.app.model.OrderEntity;
 import com.app.repository.OrderRepository;

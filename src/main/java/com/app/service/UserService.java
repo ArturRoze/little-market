@@ -8,6 +8,4 @@ import java.util.List;
 public interface UserService {
 
     UserEntity getUserById(Long id);
-
-    List<OrderEntity> getAllUserOrders(Long id);
 }

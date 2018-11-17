@@ -1,7 +1,6 @@
-package com.app.service.serviceImpl;
+package com.app.service.impl;
 
 import com.app.model.CategoryEntity;
-import com.app.model.SubCategoryEntity;
 import com.app.repository.CategoryRepository;
 import com.app.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +14,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-    }
-
-    @Override
-    public SubCategoryEntity getSubCategoryName(String name) {
-        return categoryRepository.getSubCategoryByName(name);
     }
 
     @Override

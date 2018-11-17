@@ -1,4 +1,4 @@
-package com.app.service.serviceImpl;
+package com.app.service.impl;
 
 import com.app.domain.*;
 import com.app.model.ProductDescriptionEntity;
@@ -6,63 +6,59 @@ import com.app.model.ProductEntity;
 import com.app.model.ShipmentEntity;
 import com.app.model.SubCategoryEntity;
 import com.app.repository.ProductRepository;
-import com.app.service.CategoryService;
 import com.app.service.ProductService;
+import com.app.service.SubCategoryService;
 import com.app.utils.DateConverterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryService categoryService;
+    private final SubCategoryService subCategoryService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService) {
+    public ProductServiceImpl(ProductRepository productRepository, SubCategoryService subCategoryService) {
         this.productRepository = productRepository;
-        this.categoryService = categoryService;
+        this.subCategoryService = subCategoryService;
     }
 
-    //TODO
     @Override
-    public List<ProductEntity> buyProduct(OrderDto orderDto) {
-        List<String> uuidsFromOrder = orderDto.getProducts().stream()
-                .map(item -> item.getUuid())
-                .collect(Collectors.toList());
-        List<ProductEntity> productEntities = productRepository.readProductsByUuids(uuidsFromOrder);
-        if (productEntities != null) {
-            List<String> uuidsFromDb = productEntities.stream().map(item -> item.getUuid()).collect(Collectors.toList());
-            if (uuidsFromOrder.size() != uuidsFromDb.size()) {
-                List<String> unavailableUuids = new ArrayList<>();
-                for (int i = 0; i < uuidsFromOrder.size(); i++) {
-                    if (!uuidsFromDb.contains(uuidsFromOrder.get(i))){
-                        unavailableUuids.add(uuidsFromOrder.get(i));
-                    }
-                }
-                List<ProductEntity> unavailableProductEntities = productRepository.readProductsByUuids(unavailableUuids);
-                //TODO answer to user: "These products are no longer available" !!!
-            }
-            List<ProductEntity> soldProducts = productEntities.stream().filter(item -> item.isSold()).collect(Collectors.toList());
-            List<ProductEntity> disabledProducts = productEntities.stream().filter(item -> item.isDisabled()).collect(Collectors.toList());
-            if (soldProducts != null && !soldProducts.isEmpty()){
-                //TODO answer to user: "These products are sold" !!!
-            }
-            if (disabledProducts != null && !disabledProducts.isEmpty()){
-                //TODO answer to user: "These products are disabled" !!!
-            }
-            productEntities.forEach(item -> item.setSold(true));
-            List<String> collect = productEntities.stream().map(item -> item.getUuid()).collect(Collectors.toList());
-
-
-        }
-        return null;
+    public void buyProduct(OrderDto orderDto) {
+//        List<ProductEntity> productsByOrderProductsFromDb = getProductsFromOrderProducts(orderDto.getProducts());
+//        if (productsByOrderProductsFromDb.isEmpty()){
+//            //TODO
+//            throw new RuntimeException("products no found");
+//        }
+//        List<String> uuidsFromDb = productsByOrderProductsFromDb.stream().map(item -> item.getUuid()).collect(Collectors.toList());
+//            if (uuidsFromOrder.size() != uuidsFromDb.size()) {
+//                List<String> unavailableUuids = new ArrayList<>();
+//                for (int i = 0; i < uuidsFromOrder.size(); i++) {
+//                    if (!uuidsFromDb.contains(uuidsFromOrder.get(i))) {
+//                        unavailableUuids.add(uuidsFromOrder.get(i));
+//                    }
+//                }
+//                List<ProductEntity> unavailableProductEntities = productRepository.readProductsByUuids(unavailableUuids);
+//                //TODO answer to user: "These products are no longer available" !!!
+//            List<ProductEntity> soldProducts = productEntities.stream().filter(item -> item.isSold()).collect(Collectors.toList());
+//            List<ProductEntity> disabledProducts = productEntities.stream().filter(item -> item.isDisabled()).collect(Collectors.toList());
+//            if (soldProducts != null && !soldProducts.isEmpty()) {
+//                //TODO answer to user: "These products are sold" !!!
+//            }
+//            if (disabledProducts != null && !disabledProducts.isEmpty()) {
+//                //TODO answer to user: "These products are disabled" !!!
+//            }
+//            productEntities.forEach(item -> item.setSold(true));
+//
+//
+//
+//        }
+//        return null;
     }
 
     @Override
@@ -112,10 +108,17 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.blockProductsWithIds(ids, description);
     }
 
+    private List<ProductEntity> getProductsFromOrderProducts(List<UserProductDto> userProductDtos) {
+        List<String> uuidsFromOrder = userProductDtos.stream()
+                .map(item -> item.getUuid())
+                .collect(Collectors.toList());
+        return productRepository.readProductsByUuids(uuidsFromOrder);
+    }
+
     private ProductEntity convertToProductEntity(ProductDto productDto) {
         SubCategoryDto subCategoryDto = productDto.getSubCategory();
         String name = subCategoryDto.getName();
-        SubCategoryEntity subCategoryEntity = categoryService.getSubCategoryName(name);
+        SubCategoryEntity subCategoryEntity = subCategoryService.getSubCategoryName(name);
         String title = productDto.getTitle();
         Double price = productDto.getPrice();
         String disabledReason = productDto.getDisabledReason();

@@ -1,7 +1,6 @@
-package com.app.repository.productImpl;
+package com.app.repository.impl;
 
 import com.app.model.CategoryEntity;
-import com.app.model.SubCategoryEntity;
 import com.app.repository.CategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +19,6 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     @Autowired
     public CategoryRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
-    }
-
-    @Override
-    public SubCategoryEntity getSubCategoryByName(String name) {
-        LOGGER.info("get subCategory by name: {}", name);
-        TypedQuery<SubCategoryEntity> getSubCategoriesByName = entityManager.createNamedQuery("get_subCategory_by_name", SubCategoryEntity.class);
-        getSubCategoriesByName.setParameter("name", name);
-        return getSubCategoriesByName.getSingleResult();
     }
 
     @Override

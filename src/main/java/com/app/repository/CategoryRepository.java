@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface CategoryRepository {
 
-    SubCategoryEntity getSubCategoryByName(String name);
-
     CategoryEntity getCategoryByName(String name);
 }

@@ -1,7 +1,6 @@
-package com.app.service.serviceImpl;
+package com.app.service.impl;
 
 import com.app.domain.OrderDto;
-import com.app.domain.UserDto;
 import com.app.domain.UserProductDto;
 import com.app.model.OrderEntity;
 import com.app.model.ProductEntity;
@@ -39,6 +38,11 @@ public class OrderServiceImpl implements OrderService {
         return savedOrderEntity.getId() != null;
     }
 
+    @Override
+    public List<OrderEntity> getAllUserOrders(Long id) {
+        return orderRepository.getAllOrdersByUserId(id);
+    }
+
     private OrderEntity convertToOrderEntity(OrderDto orderDto) {
         String title = orderDto.getTitle();
         Double totalPriceOrder = getTotalPriceOrder(orderDto);
@@ -47,10 +51,9 @@ public class OrderServiceImpl implements OrderService {
         List<UserProductDto> products = orderDto.getProducts();
         List<String> uuids = products.stream().map(item -> item.getUuid()).collect(Collectors.toList());
         List<ProductEntity> productEntities = productRepository.readProductsByUuids(uuids);
-        UserDto user = orderDto.getUser();
-        Long id = user.getId();
-        UserEntity userEntity = userRepository.readById(id);
-        return new OrderEntity(title,totalPriceOrder,timestampCreationDate,productEntities,userEntity);
+        Long userId = orderDto.getUserId();
+        UserEntity userEntity = userRepository.readById(userId);
+        return new OrderEntity(title, totalPriceOrder, timestampCreationDate, productEntities, userEntity);
     }
 
     private Double getTotalPriceOrder(OrderDto orderDto) {

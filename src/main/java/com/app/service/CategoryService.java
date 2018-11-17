@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface CategoryService {
 
-    SubCategoryEntity getSubCategoryName(String name);
-
     CategoryEntity getCategoryByName(String name);
 }

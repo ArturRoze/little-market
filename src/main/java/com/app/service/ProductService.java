@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductService extends BlockProduct {
 
-    List<ProductEntity> buyProduct(OrderDto orderDto);
+    void buyProduct(OrderDto orderDto);
 
     boolean addProduct(ProductDto productDto);
 

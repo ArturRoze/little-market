@@ -1,72 +1,30 @@
 package com.app.controller;
 
 import com.app.domain.BlockRequestDto;
-import com.app.domain.ProductDto;
-import com.app.model.*;
-import com.app.service.CategoryService;
 import com.app.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admins")
 public class AdminController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private final ProductService productService;
-    private final CategoryService categoryService;
 
     @Autowired
-    public AdminController(ProductService productService, CategoryService categoryService) {
+    public AdminController(ProductService productService) {
         LOGGER.info("create AdminController");
-        this.categoryService = categoryService;
         this.productService = productService;
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity addProduct(@RequestBody ProductDto productDto) {
-        LOGGER.info("income request: {}", productDto);
-        LOGGER.info("resultOfAdd: {}", productService.addProduct(productDto));
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @PostMapping("/update/{id}")
-    public ResponseEntity updateProduct(@RequestBody ProductDto productDto, @PathVariable long id) {
-        LOGGER.info("income request: {} with id: {}", productDto, id);
-        LOGGER.info("resultOfUpdate: {}", productService.updateProduct(productDto, id));
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @GetMapping("/all")
-    public List<ProductEntity> readAll() {
-        LOGGER.info("read all product...");
-        return productService.getAllProducts();
-    }
-
-    @GetMapping("/read/{id}")
-    public ProductEntity readById(@PathVariable long id) {
-        LOGGER.info("read product by id: ", id);
-        return productService.getProductById(id);
-    }
-
-    @GetMapping("/titles/{title}")
-    public List<ProductEntity> getAllProductsByTitle(@PathVariable String title) {
-        LOGGER.info("read all products by title: {}", title);
-        return productService.getAllProductsByTitle(title);
-    }
-
-    @PostMapping("/delete/{id}")
-    public ResponseEntity deleteProductById(@PathVariable long id) {
-        LOGGER.info("income request with id: {}", id);
-        productService.deleteById(id);
-        LOGGER.info("Product with id: {} was deleted", id);
-        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/disable")
@@ -76,17 +34,5 @@ public class AdminController {
         String blockReason = blockRequestDto.getBlockReason();
         productService.block(ids, blockReason);
         return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @GetMapping("/category/{name}")
-    public CategoryEntity getCategoryByName(@PathVariable String name) {
-        LOGGER.info("get category by name: {}", name);
-        return categoryService.getCategoryByName(name);
-    }
-
-    @GetMapping("/subCategory/{name}")
-    public SubCategoryEntity getSubCategoryByName(@PathVariable String name) {
-        LOGGER.info("get subCategory by name: {}", name);
-        return categoryService.getSubCategoryName(name);
     }
 }

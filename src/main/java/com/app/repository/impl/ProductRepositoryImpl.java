@@ -1,4 +1,4 @@
-package com.app.repository.productImpl;
+package com.app.repository.impl;
 
 import com.app.model.ProductEntity;
 import com.app.repository.ProductRepository;
