@@ -26,7 +26,7 @@ public class OrderController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity addOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity add(@RequestBody OrderDto orderDto) {
         LOGGER.info("income order: {}", orderDto);
         LOGGER.info("resultOfCreating: {}", orderService.addOrder(orderDto));
         return new ResponseEntity(HttpStatus.OK);
@@ -38,5 +38,32 @@ public class OrderController {
         List<OrderEntity> allUserOrders = orderService.getAllUserOrders(id);
         LOGGER.info("get all user orders: {}", allUserOrders);
         return allUserOrders;
+    }
+
+    @GetMapping("/all")
+    public List<OrderEntity> readAll() {
+        LOGGER.info("read all orders...");
+        return orderService.getAllOrders();
+    }
+
+    @GetMapping("/{id}")
+    public OrderEntity readById(@PathVariable long id) {
+        LOGGER.info("read order by id: ", id);
+        return orderService.getOrderById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity update(@RequestBody OrderDto orderDto, @PathVariable long id) {
+        LOGGER.info("income order: {} with id: {}", orderDto, id);
+        LOGGER.info("resultOfUpdate: {}", orderService.updateOrder(orderDto, id));
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteById(@PathVariable long id) {
+        LOGGER.info("income order with id: {}", id);
+        orderService.deleteOrderById(id);
+        LOGGER.info("Order with id: {} was deleted", id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

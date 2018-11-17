@@ -13,16 +13,15 @@ import javax.persistence.*;
 @Entity
 @Table(name = "sub_category")
 @NamedQueries({
+        @NamedQuery(query = "select sc from SubCategoryEntity sc join sc.categoryEntity", name = "get_all_subCategories"),
         @NamedQuery(query = "select sc from SubCategoryEntity sc where sc.name = :name", name = "get_subCategory_by_name")
 })
 public class SubCategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
     @Column
     private String name;
-    @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnore

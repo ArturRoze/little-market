@@ -3,6 +3,7 @@ package com.app.controller;
 import com.app.domain.ProductDto;
 import com.app.model.ProductEntity;
 import com.app.service.ProductService;
+import com.mysql.jdbc.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,10 @@ public class ProductController {
     @GetMapping("/{title}")
     public List<ProductEntity> getAllProductsByTitle(@PathVariable String title) {
         LOGGER.info("read all products by title: {}", title);
-        return productService.getAllProductsByTitle(title);
+        if (!StringUtils.isNullOrEmpty(title)){
+            return productService.getAllProductsByTitle(title);
+        }
+        return null;
     }
 
     @PostMapping("/new")

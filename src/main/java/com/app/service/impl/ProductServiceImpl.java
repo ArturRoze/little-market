@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
 //                List<String> unavailableUuids = new ArrayList<>();
 //                for (int i = 0; i < uuidsFromOrder.size(); i++) {
 //                    if (!uuidsFromDb.contains(uuidsFromOrder.get(i))) {
-//                        unavailableUuids.add(uuidsFromOrder.get(i));
+//                        unavailableUuids.addOrder(uuidsFromOrder.get(i));
 //                    }
 //                }
 //                List<ProductEntity> unavailableProductEntities = productRepository.readProductsByUuids(unavailableUuids);

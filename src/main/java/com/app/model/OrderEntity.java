@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "client_order")
 @NamedQueries({
+        @NamedQuery(query = "select o from OrderEntity o join o.user", name = "get_all_orders"),
         @NamedQuery(query = "select o from OrderEntity o join o.user where user_id =:id", name = "get_all_orders_by_user_id")
 })
 public class OrderEntity {

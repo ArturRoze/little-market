@@ -78,12 +78,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Transactional
     public void deleteById(Long id) {
         ProductEntity productEntity = readById(id);
-        if (productEntity != null) {
-            entityManager.remove(productEntity);
-            LOGGER.info("product with id: {} was deleted", id);
-        } else {
+        if (productEntity == null) {
             LOGGER.info("product with id: {} not exist", id);
         }
+        entityManager.remove(productEntity);
+        LOGGER.info("product with id: {} was deleted", id);
     }
 
     @Override

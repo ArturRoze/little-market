@@ -10,10 +10,12 @@ import com.app.repository.ProductRepository;
 import com.app.repository.UserRepository;
 import com.app.service.OrderService;
 import com.app.utils.DateConverterUtil;
+import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +43,53 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderEntity> getAllUserOrders(Long id) {
         return orderRepository.getAllOrdersByUserId(id);
+    }
+
+    @Override
+    public List<OrderEntity> getAllOrders() {
+        return orderRepository.readAll();
+    }
+
+    @Override
+    public OrderEntity getOrderById(Long id) {
+        return orderRepository.readById(id);
+    }
+
+    @Override
+    public OrderEntity updateOrder(OrderDto orderDto, Long id) {
+        OrderEntity orderEntityFromDb = orderRepository.readById(id);
+        changeFieldsOrderDtoToOrderEntity(orderDto, orderEntityFromDb);
+        return orderRepository.update(orderEntityFromDb);
+    }
+
+    @Override
+    public void deleteOrderById(Long id) {
+        orderRepository.deleteById(id);
+    }
+
+    private void changeFieldsOrderDtoToOrderEntity(OrderDto orderDto, OrderEntity orderEntityFromDb) {
+        String title = orderDto.getTitle();
+        if (title != null){
+            orderEntityFromDb.setTitle(title);
+        }
+//        String creationDate = orderDto.getCreationDate();
+//        if (creationDate != null){
+//            Timestamp timestamp = DateConverterUtil.convertStringDateToTimestamp(creationDate);
+//            orderEntityFromDb.setCreationDate(timestamp);
+//        }
+
+//        Long userId = orderDto.getUserId();
+//        if (userId != null){
+//
+//        }
+
+        List<UserProductDto> productsDto = orderDto.getProducts();
+        if (!productsDto.isEmpty()){
+            List<UserProductDto> products = orderDto.getProducts();
+            List<String> uuids = products.stream().map(item -> item.getUuid()).collect(Collectors.toList());
+            List<ProductEntity> productEntities = productRepository.readProductsByUuids(uuids);
+            orderEntityFromDb.setProducts(productEntities);
+        }
     }
 
     private OrderEntity convertToOrderEntity(OrderDto orderDto) {

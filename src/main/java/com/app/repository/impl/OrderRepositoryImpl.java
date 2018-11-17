@@ -33,9 +33,43 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     @Transactional(readOnly = true)
+    public List<OrderEntity> readAll() {
+        TypedQuery<OrderEntity> orderEntityTypedQuery = entityManager.createNamedQuery("get_all_orders", OrderEntity.class);
+        LOGGER.info("read all category: {} ", orderEntityTypedQuery);
+        return orderEntityTypedQuery.getResultList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<OrderEntity> getAllOrdersByUserId(Long id) {
         TypedQuery<OrderEntity> ordersByUserId = entityManager.createNamedQuery("get_all_orders_by_user_id", OrderEntity.class);
         ordersByUserId.setParameter("id", id);
         return ordersByUserId.getResultList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OrderEntity readById(Long id) {
+        LOGGER.info("read order with id: {} ", id);
+        return entityManager.find(OrderEntity.class, id);
+    }
+
+    @Override
+    @Transactional
+    public OrderEntity update(OrderEntity orderEntity) {
+        OrderEntity mergeOrder = entityManager.merge(orderEntity);
+        LOGGER.info("updated order: " + mergeOrder);
+        return mergeOrder;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        OrderEntity orderEntity = readById(id);
+        if (orderEntity == null) {
+            LOGGER.info("order with id: {} not exist", id);
+        }
+        entityManager.remove(orderEntity);
+        LOGGER.info("order with id: {} was deleted", id);
     }
 }
