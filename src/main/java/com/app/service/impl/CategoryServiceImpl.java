@@ -1,6 +1,7 @@
 package com.app.service.impl;
 
 import com.app.domain.CategoryDto;
+import com.app.domain.ConverterToEntity;
 import com.app.domain.SubCategoryDto;
 import com.app.model.CategoryEntity;
 import com.app.model.SubCategoryEntity;
@@ -16,17 +17,12 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-//    private final SubCategoryServiceImpl subCategoryServiceImpl;
-
-//    @Autowired
-//    public CategoryServiceImpl(CategoryRepository categoryRepository, SubCategoryServiceImpl subCategoryServiceImpl) {
-//        this.categoryRepository = categoryRepository;
-//        this.subCategoryServiceImpl = subCategoryServiceImpl;
-//    }
+    private final ConverterToEntity converterToEntity;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ConverterToEntity converterToEntity) {
         this.categoryRepository = categoryRepository;
+        this.converterToEntity = converterToEntity;
     }
 
     @Override
@@ -36,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean addCategory(CategoryDto categoryDto) {
-        CategoryEntity categoryEntity = convertToCategoryEntity(categoryDto);
+        CategoryEntity categoryEntity = converterToEntity.convertToCategoryEntity(categoryDto);
         CategoryEntity savedCategoryEntity = categoryRepository.save(categoryEntity);
         return savedCategoryEntity.getId() != null;
     }
@@ -68,21 +64,15 @@ public class CategoryServiceImpl implements CategoryService {
         if (name != null){
             categoryEntityFromDb.setName(name);
         }
-//        List<SubCategoryDto> subCategoriesDto = categoryDto.getSubCategories();
-//        if (!subCategoriesDto.isEmpty()){
-//            List<SubCategoryEntity> subCategoryEntities = new ArrayList<>();
-//            for (SubCategoryDto subCategoryDto : subCategoriesDto) {
-//                subCategoryEntities.add(subCategoryServiceImpl.convertToSubCategoryEntity(subCategoryDto));
-//            }
-//            categoryEntityFromDb.setSubCategories(subCategoryEntities);
-//        }
+        List<SubCategoryDto> subCategoriesDto = categoryDto.getSubCategories();
+        if (!subCategoriesDto.isEmpty()){
+            List<SubCategoryEntity> subCategoryEntities = new ArrayList<>();
+            for (SubCategoryDto subCategoryDto : subCategoriesDto) {
+                subCategoryEntities.add(converterToEntity.convertToSubCategoryEntity(subCategoryDto));
+            }
+            categoryEntityFromDb.setSubCategories(subCategoryEntities);
+        }
     }
-
-    CategoryEntity convertToCategoryEntity(CategoryDto categoryDto) {
-        String name = categoryDto.getName();
-        return new CategoryEntity(name);
-    }
-
 }
 
 

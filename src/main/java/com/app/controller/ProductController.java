@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import com.app.domain.ProductDto;
+import com.app.exception.ProductException;
 import com.app.model.ProductEntity;
 import com.app.service.ProductService;
 import com.mysql.jdbc.StringUtils;
@@ -75,4 +76,6 @@ public class ProductController {
         LOGGER.info("availableProducts: {}", availableProducts);
         return availableProducts;
     }
+
+
 }

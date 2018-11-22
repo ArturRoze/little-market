@@ -1,6 +1,7 @@
 package com.app.service.impl;
 
 import com.app.domain.CategoryDto;
+import com.app.domain.ConverterToEntity;
 import com.app.domain.SubCategoryDto;
 import com.app.model.CategoryEntity;
 import com.app.model.SubCategoryEntity;
@@ -15,12 +16,12 @@ import java.util.List;
 public class SubCategoryServiceImpl implements SubCategoryService {
 
     private final SubCategoryRepository subCategoryRepository;
-    private final CategoryServiceImpl categoryServiceImpl;
+    private final ConverterToEntity converterToEntity;
 
     @Autowired
-    public SubCategoryServiceImpl(SubCategoryRepository subCategoryRepository, CategoryServiceImpl categoryServiceImpl) {
+    public SubCategoryServiceImpl(SubCategoryRepository subCategoryRepository, ConverterToEntity converterToEntity) {
         this.subCategoryRepository = subCategoryRepository;
-        this.categoryServiceImpl = categoryServiceImpl;
+        this.converterToEntity = converterToEntity;
     }
 
     @Override
@@ -30,7 +31,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
     @Override
     public boolean addSubCategory(SubCategoryDto subCategoryDto) {
-        SubCategoryEntity categoryEntity = convertToSubCategoryEntity(subCategoryDto);
+        SubCategoryEntity categoryEntity = converterToEntity.convertToSubCategoryEntity(subCategoryDto);
         SubCategoryEntity savedCategoryEntity = subCategoryRepository.save(categoryEntity);
         return savedCategoryEntity.getId() != null;
     }
@@ -54,12 +55,12 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
     private void changeFieldsSubCategoryDtoToSubCategoryEntity(SubCategoryDto subCategoryDto, SubCategoryEntity subCategoryEntityFromDb) {
         String name = subCategoryDto.getName();
-        if (name != null){
+        if (name != null) {
             subCategoryEntityFromDb.setName(name);
         }
         CategoryDto categoryDto = subCategoryDto.getCategory();
-        if (categoryDto != null){
-            CategoryEntity categoryEntity = categoryServiceImpl.convertToCategoryEntity(categoryDto);
+        if (categoryDto != null) {
+            CategoryEntity categoryEntity = converterToEntity.convertToCategoryEntity(categoryDto);
             subCategoryEntityFromDb.setCategoryEntity(categoryEntity);
         }
     }
@@ -67,12 +68,5 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     @Override
     public void deleteById(Long id) {
         subCategoryRepository.deleteById(id);
-    }
-
-    SubCategoryEntity convertToSubCategoryEntity(SubCategoryDto subCategoryDto) {
-        String name = subCategoryDto.getName();
-        CategoryDto categoryDto = subCategoryDto.getCategory();
-        CategoryEntity categoryEntity = categoryServiceImpl.convertToCategoryEntity(categoryDto);
-        return new SubCategoryEntity(name, categoryEntity);
     }
 }

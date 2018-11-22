@@ -6,8 +6,8 @@ import com.app.model.ProductEntity;
 import com.app.model.ShipmentEntity;
 import com.app.model.SubCategoryEntity;
 import com.app.repository.ProductRepository;
+import com.app.repository.SubCategoryRepository;
 import com.app.service.ProductService;
-import com.app.service.SubCategoryService;
 import com.app.utils.DateConverterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,14 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final SubCategoryService subCategoryService;
+    private final SubCategoryRepository subCategoryRepository;
+    private final ConverterToEntity converterToEntity;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, SubCategoryService subCategoryService) {
+    public ProductServiceImpl(ProductRepository productRepository, SubCategoryRepository subCategoryRepository, ConverterToEntity converterToEntity) {
         this.productRepository = productRepository;
-        this.subCategoryService = subCategoryService;
+        this.subCategoryRepository = subCategoryRepository;
+        this.converterToEntity = converterToEntity;
     }
 
     @Override
@@ -61,9 +63,16 @@ public class ProductServiceImpl implements ProductService {
 //        return null;
     }
 
+    private List<ProductEntity> getProductsFromOrderProducts(List<UserProductDto> userProductDtos) {
+        List<String> uuidsFromOrder = userProductDtos.stream()
+                .map(item -> item.getUuid())
+                .collect(Collectors.toList());
+        return productRepository.readProductsByUuids(uuidsFromOrder);
+    }
+
     @Override
     public boolean addProduct(ProductDto productDto) {
-        ProductEntity productEntity = convertToProductEntity(productDto);
+        ProductEntity productEntity = converterToEntity.convertToProductEntity(productDto);
         ProductEntity savedProductEntity = productRepository.save(productEntity);
         return savedProductEntity.getId() != null;
     }
@@ -106,46 +115,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int block(List<Long> ids, String description) {
         return productRepository.blockProductsWithIds(ids, description);
-    }
-
-    private List<ProductEntity> getProductsFromOrderProducts(List<UserProductDto> userProductDtos) {
-        List<String> uuidsFromOrder = userProductDtos.stream()
-                .map(item -> item.getUuid())
-                .collect(Collectors.toList());
-        return productRepository.readProductsByUuids(uuidsFromOrder);
-    }
-
-    private ProductEntity convertToProductEntity(ProductDto productDto) {
-        SubCategoryDto subCategoryDto = productDto.getSubCategory();
-        String name = subCategoryDto.getName();
-        SubCategoryEntity subCategoryEntity = subCategoryService.getSubCategoryName(name);
-        String title = productDto.getTitle();
-        Double price = productDto.getPrice();
-        String disabledReason = productDto.getDisabledReason();
-        ProductDescriptionEntity productDescriptionEntity = getProductDescriptionFromDto(productDto);
-        ShipmentEntity shipmentEntity = getShipmentFromDto(productDto);
-        return new ProductEntity(subCategoryEntity, title, price, false, disabledReason, false, productDescriptionEntity, shipmentEntity);
-    }
-
-    private ShipmentEntity getShipmentFromDto(ProductDto productDto) {
-        ShipmentDto shipmentDto = productDto.getShipment();
-        Long shipmentId = shipmentDto.getId();
-        String shipmentDescription = shipmentDto.getDescription();
-        String shipmentIncomeDate = shipmentDto.getIncomeDate();
-        Timestamp shipmentDate = DateConverterUtil.convertStringDateToTimestamp(shipmentIncomeDate);
-        ShipmentEntity shipmentEntity = new ShipmentEntity(shipmentDescription, shipmentDate);
-        shipmentEntity.setId(shipmentId);
-        return shipmentEntity;
-    }
-
-    private ProductDescriptionEntity getProductDescriptionFromDto(ProductDto productDto) {
-        ProductDescriptionDto productDescriptionDto = productDto.getProductDescription();
-        Long productDescriptionId = productDescriptionDto.getId();
-        String nameDescription = productDescriptionDto.getName();
-        String description = productDescriptionDto.getDescription();
-        ProductDescriptionEntity productDescriptionEntity = new ProductDescriptionEntity(nameDescription, description);
-        productDescriptionEntity.setId(productDescriptionId);
-        return productDescriptionEntity;
     }
 
     private void changeFieldsProductDtoToProductEntity(ProductDto productDto, ProductEntity productEntityFromDb) {

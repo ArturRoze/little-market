@@ -1,21 +1,16 @@
 package com.app.service.impl;
 
+import com.app.domain.ConverterToEntity;
 import com.app.domain.OrderDto;
 import com.app.domain.UserProductDto;
 import com.app.model.OrderEntity;
 import com.app.model.ProductEntity;
-import com.app.model.UserEntity;
 import com.app.repository.OrderRepository;
 import com.app.repository.ProductRepository;
-import com.app.repository.UserRepository;
 import com.app.service.OrderService;
-import com.app.utils.DateConverterUtil;
-import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,19 +18,19 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final ConverterToEntity converterToEntity;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, ConverterToEntity converterToEntity) {
         this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.converterToEntity = converterToEntity;
     }
 
     @Override
     public boolean addOrder(OrderDto orderDto) {
-        OrderEntity orderEntity = convertToOrderEntity(orderDto);
+        OrderEntity orderEntity = converterToEntity.convertToOrderEntity(orderDto);
         OrderEntity savedOrderEntity = orderRepository.save(orderEntity);
         return savedOrderEntity.getId() != null;
     }
@@ -69,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void changeFieldsOrderDtoToOrderEntity(OrderDto orderDto, OrderEntity orderEntityFromDb) {
         String title = orderDto.getTitle();
-        if (title != null){
+        if (title != null) {
             orderEntityFromDb.setTitle(title);
         }
 //        String creationDate = orderDto.getCreationDate();
@@ -84,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
 //        }
 
         List<UserProductDto> productsDto = orderDto.getProducts();
-        if (!productsDto.isEmpty()){
+        if (!productsDto.isEmpty()) {
             List<UserProductDto> products = orderDto.getProducts();
             List<String> uuids = products.stream().map(item -> item.getUuid()).collect(Collectors.toList());
             List<ProductEntity> productEntities = productRepository.readProductsByUuids(uuids);
@@ -92,20 +87,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private OrderEntity convertToOrderEntity(OrderDto orderDto) {
-        String title = orderDto.getTitle();
-        Double totalPriceOrder = getTotalPriceOrder(orderDto);
-        String creationDate = orderDto.getCreationDate();
-        Timestamp timestampCreationDate = DateConverterUtil.convertStringDateToTimestamp(creationDate);
-        List<UserProductDto> products = orderDto.getProducts();
-        List<String> uuids = products.stream().map(item -> item.getUuid()).collect(Collectors.toList());
-        List<ProductEntity> productEntities = productRepository.readProductsByUuids(uuids);
-        Long userId = orderDto.getUserId();
-        UserEntity userEntity = userRepository.readById(userId);
-        return new OrderEntity(title, totalPriceOrder, timestampCreationDate, productEntities, userEntity);
-    }
-
-    private Double getTotalPriceOrder(OrderDto orderDto) {
+    public Double getTotalPriceOrder(OrderDto orderDto) {
         return orderDto.getProducts().stream().mapToDouble(item -> item.getPrice()).sum();
     }
 }
