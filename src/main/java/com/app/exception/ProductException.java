@@ -1,8 +1,23 @@
 package com.app.exception;
 
-public class ProductException extends RuntimeException{
+import com.app.domain.ProductMsgResponse;
 
-    public ProductException(String message) {
+import java.util.List;
+
+public class ProductException extends RuntimeException {
+
+    private List<ProductMsgResponse> productsMsg;
+
+    public ProductException(String message, List<ProductMsgResponse> productsMsg) {
         super(message);
+        this.productsMsg = productsMsg;
+    }
+
+    public List<ProductMsgResponse> getProductsMsg() {
+        return productsMsg;
+    }
+
+    public void setProductsMsg(List<ProductMsgResponse> productsMsg) {
+        this.productsMsg = productsMsg;
     }
 }

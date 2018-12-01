@@ -22,5 +22,5 @@ public interface ProductService extends BlockProduct {
 
     List<ProductEntity> getAllProductsByTitle(String title);
 
-    void deleteById(Long id);
+    void deleteProductById(Long id);
 }

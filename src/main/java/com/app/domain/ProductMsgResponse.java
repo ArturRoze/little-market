@@ -7,8 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyResponse {
+public class ProductMsgResponse {
 
-    private String str;
+    private String uuid;
+    private String title;
 
+    public ProductMsgResponse(String uuid) {
+        this.uuid = uuid;
+    }
 }

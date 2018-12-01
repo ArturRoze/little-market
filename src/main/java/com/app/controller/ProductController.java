@@ -1,7 +1,6 @@
 package com.app.controller;
 
 import com.app.domain.ProductDto;
-import com.app.exception.ProductException;
 import com.app.model.ProductEntity;
 import com.app.service.ProductService;
 import com.mysql.jdbc.StringUtils;
@@ -56,15 +55,15 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateProduct(@RequestBody ProductDto productDto, @PathVariable long id) {
-        LOGGER.info("income request: {} with id: {}", productDto, id);
+        LOGGER.info("update product: {} with id: {}", productDto, id);
         LOGGER.info("resultOfUpdate: {}", productService.updateProduct(productDto, id));
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteProductById(@PathVariable long id) {
-        LOGGER.info("income request with id: {}", id);
-        productService.deleteById(id);
+        LOGGER.info("delete product with id: {}", id);
+        productService.deleteProductById(id);
         LOGGER.info("Product with id: {} was deleted", id);
         return new ResponseEntity(HttpStatus.OK);
     }

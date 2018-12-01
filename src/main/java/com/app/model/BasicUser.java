@@ -17,6 +17,16 @@ public abstract class BasicUser {
     @Column (name = "registration_date")
     private Timestamp registrationDate;
 
+    public BasicUser() {
+    }
+
+    public BasicUser(String login, String password, String email, Timestamp registrationDate) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.registrationDate = registrationDate;
+    }
+
     public Long getId() {
         return id;
     }

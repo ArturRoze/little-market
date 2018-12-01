@@ -4,7 +4,6 @@ import com.app.model.*;
 import com.app.repository.ProductRepository;
 import com.app.repository.SubCategoryRepository;
 import com.app.repository.UserRepository;
-import com.app.service.impl.OrderServiceImpl;
 import com.app.utils.DateConverterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,14 +18,12 @@ public class ConverterToEntity {
     private final SubCategoryRepository subCategoryRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-    private final OrderServiceImpl orderServiceImpl;
 
     @Autowired
-    public ConverterToEntity(SubCategoryRepository subCategoryRepository, ProductRepository productRepository, UserRepository userRepository, OrderServiceImpl orderServiceImpl) {
+    public ConverterToEntity(SubCategoryRepository subCategoryRepository, ProductRepository productRepository, UserRepository userRepository) {
         this.subCategoryRepository = subCategoryRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
-        this.orderServiceImpl = orderServiceImpl;
     }
 
     public SubCategoryEntity convertToSubCategoryEntity(SubCategoryDto subCategoryDto) {
@@ -76,14 +73,29 @@ public class ConverterToEntity {
 
     public OrderEntity convertToOrderEntity(OrderDto orderDto) {
         String title = orderDto.getTitle();
-        Double totalPriceOrder = orderServiceImpl.getTotalPriceOrder(orderDto);
+        Double totalPriceOrder = getTotalPriceOrder(orderDto);
         String creationDate = orderDto.getCreationDate();
         Timestamp timestampCreationDate = DateConverterUtil.convertStringDateToTimestamp(creationDate);
         List<UserProductDto> products = orderDto.getProducts();
         List<String> uuids = products.stream().map(item -> item.getUuid()).collect(Collectors.toList());
         List<ProductEntity> productEntities = productRepository.readProductsByUuids(uuids);
         Long userId = orderDto.getUserId();
-        UserEntity userEntity = userRepository.readById(userId);
+        UserEntity userEntity = userRepository.readUserById(userId);
         return new OrderEntity(title, totalPriceOrder, timestampCreationDate, productEntities, userEntity);
+    }
+
+    public Double getTotalPriceOrder(OrderDto orderDto) {
+        return orderDto.getProducts().stream().mapToDouble(item -> item.getPrice()).sum();
+    }
+
+    public UserEntity convertToUserEntity(UserDto userDto) {
+        String firstName = userDto.getFirstName();
+        String lastName = userDto.getLastName();
+        String email = userDto.getEmail();
+        String login = userDto.getLogin();
+        String password = userDto.getPassword();
+        String creationDate = userDto.getCreationDate();
+        Timestamp timestampCreationDate = DateConverterUtil.convertStringDateToTimestamp(creationDate);
+        return new UserEntity(login, password, email, timestampCreationDate, firstName, lastName);
     }
 }

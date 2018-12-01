@@ -1,18 +1,20 @@
 package com.app.service.impl;
 
 import com.app.domain.*;
+import com.app.exception.ProductException;
 import com.app.model.ProductDescriptionEntity;
 import com.app.model.ProductEntity;
 import com.app.model.ShipmentEntity;
 import com.app.model.SubCategoryEntity;
 import com.app.repository.ProductRepository;
-import com.app.repository.SubCategoryRepository;
+import com.app.service.OrderService;
 import com.app.service.ProductService;
 import com.app.utils.DateConverterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,54 +22,111 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final SubCategoryRepository subCategoryRepository;
     private final ConverterToEntity converterToEntity;
+    private final OrderService orderService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, SubCategoryRepository subCategoryRepository, ConverterToEntity converterToEntity) {
+    public ProductServiceImpl(ProductRepository productRepository, ConverterToEntity converterToEntity, OrderService orderService) {
         this.productRepository = productRepository;
-        this.subCategoryRepository = subCategoryRepository;
         this.converterToEntity = converterToEntity;
+        this.orderService = orderService;
     }
 
     @Override
     public void buyProduct(OrderDto orderDto) {
-//        List<ProductEntity> productsByOrderProductsFromDb = getProductsFromOrderProducts(orderDto.getProducts());
-//        if (productsByOrderProductsFromDb.isEmpty()){
-//            //TODO
-//            throw new RuntimeException("products no found");
-//        }
-//        List<String> uuidsFromDb = productsByOrderProductsFromDb.stream().map(item -> item.getUuid()).collect(Collectors.toList());
-//            if (uuidsFromOrder.size() != uuidsFromDb.size()) {
-//                List<String> unavailableUuids = new ArrayList<>();
-//                for (int i = 0; i < uuidsFromOrder.size(); i++) {
-//                    if (!uuidsFromDb.contains(uuidsFromOrder.get(i))) {
-//                        unavailableUuids.addOrder(uuidsFromOrder.get(i));
-//                    }
-//                }
-//                List<ProductEntity> unavailableProductEntities = productRepository.readProductsByUuids(unavailableUuids);
-//                //TODO answer to user: "These products are no longer available" !!!
-//            List<ProductEntity> soldProducts = productEntities.stream().filter(item -> item.isSold()).collect(Collectors.toList());
-//            List<ProductEntity> disabledProducts = productEntities.stream().filter(item -> item.isDisabled()).collect(Collectors.toList());
-//            if (soldProducts != null && !soldProducts.isEmpty()) {
-//                //TODO answer to user: "These products are sold" !!!
-//            }
-//            if (disabledProducts != null && !disabledProducts.isEmpty()) {
-//                //TODO answer to user: "These products are disabled" !!!
-//            }
-//            productEntities.forEach(item -> item.setSold(true));
-//
-//
-//
-//        }
-//        return null;
+        List<ProductEntity> productsByOrderProductsFromDb = getProductsFromOrderProducts(orderDto);
+        if (productsByOrderProductsFromDb.isEmpty()) {
+            List<ProductMsgResponse> productsMsgResponse = getProductsMsgResponse(productsByOrderProductsFromDb);
+            throw new ProductException("products no found", productsMsgResponse);
+        }
+        if (!compareUuids(orderDto.getProducts(), productsByOrderProductsFromDb)) {
+            List<String> unavailableProducts = getUnavailableProducts(orderDto, productsByOrderProductsFromDb);
+            List<ProductMsgResponse> productsMsgResponse = getProductsMsgResponseByUuids(unavailableProducts);
+            throw new ProductException("These products are no longer available", productsMsgResponse);
+        }
+        List<ProductEntity> soldProductEntities = checkSoldProducts(productsByOrderProductsFromDb);
+        if (soldProductEntities != null && !soldProductEntities.isEmpty()) {
+            List<ProductMsgResponse> productsMsgResponse = getProductsMsgResponse(soldProductEntities);
+            throw new ProductException("These products are sold", productsMsgResponse);
+        }
+        List<ProductEntity> disabledProductEntities = checkDisabledProducts(productsByOrderProductsFromDb);
+        if (disabledProductEntities != null && !disabledProductEntities.isEmpty()) {
+            List<ProductMsgResponse> productsMsgResponse = getProductsMsgResponse(disabledProductEntities);
+            throw new ProductException("These products are disabled", productsMsgResponse);
+        }
+        markSoldProductsInDb(productsByOrderProductsFromDb);
+        orderService.addOrder(orderDto);
     }
 
-    private List<ProductEntity> getProductsFromOrderProducts(List<UserProductDto> userProductDtos) {
-        List<String> uuidsFromOrder = userProductDtos.stream()
+    private List<ProductMsgResponse> getProductsMsgResponse(List<ProductEntity> products) {
+        List<String> productTitles = products.stream()
+                .map(item -> item.getTitle())
+                .collect(Collectors.toList());
+        List<ProductMsgResponse> productMsgResponses = new ArrayList<>();
+        for (String item : productTitles) {
+            productMsgResponses.add(new ProductMsgResponse(item));
+        }
+        return productMsgResponses;
+    }
+
+    private List<ProductMsgResponse> getProductsMsgResponseByUuids(List<String> productUUids) {
+        List<ProductMsgResponse> productMsgResponses = new ArrayList<>();
+        for (String uuid : productUUids) {
+            productMsgResponses.add(new ProductMsgResponse(uuid));
+        }
+        return productMsgResponses;
+    }
+
+    private List<ProductEntity> checkSoldProducts(List<ProductEntity> productsByOrderProductsFromDb) {
+        return productsByOrderProductsFromDb.stream()
+                .filter(item -> item.isSold())
+                .collect(Collectors.toList());
+    }
+
+    private List<ProductEntity> checkDisabledProducts(List<ProductEntity> productsByOrderProductsFromDb) {
+        return productsByOrderProductsFromDb.stream()
+                .filter(item -> item.isDisabled())
+                .collect(Collectors.toList());
+    }
+
+    private List<ProductEntity> getProductsFromOrderProducts(OrderDto orderDto) {
+        List<String> uuidsFromOrder = orderDto.getProducts().stream()
                 .map(item -> item.getUuid())
                 .collect(Collectors.toList());
         return productRepository.readProductsByUuids(uuidsFromOrder);
+    }
+
+    private boolean compareUuids(List<UserProductDto> userProducts, List<ProductEntity> products) {
+        List<String> uuidsFromOrder = userProducts.stream()
+                .map(item -> item.getUuid())
+                .collect(Collectors.toList());
+        List<String> uuidsFromDb = products.stream()
+                .map(item -> item.getUuid())
+                .collect(Collectors.toList());
+        return uuidsFromOrder.size() == uuidsFromDb.size();
+    }
+
+    private List<String> getUnavailableProducts(OrderDto orderDto, List<ProductEntity> productsFromDb) {
+        List<String> uuidsFromOrder = orderDto.getProducts().stream()
+                .map(item -> item.getUuid())
+                .collect(Collectors.toList());
+        List<String> uuidsFromDb = productsFromDb.stream()
+                .map(item -> item.getUuid())
+                .collect(Collectors.toList());
+        List<String> unavailableUuids = new ArrayList<>();
+        for (String anUuidsFromOrder : uuidsFromOrder) {
+            if (!uuidsFromDb.contains(anUuidsFromOrder)) {
+                unavailableUuids.add(anUuidsFromOrder);
+            }
+        }
+        return unavailableUuids;
+    }
+
+    private void markSoldProductsInDb(List<ProductEntity> productsByOrderProductsFromDb) {
+        List<String> collect = productsByOrderProductsFromDb.stream()
+                .map(item -> item.getUuid())
+                .collect(Collectors.toList());
+        productRepository.sellProducts(collect);
     }
 
     @Override
@@ -108,7 +167,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteProductById(Long id) {
         productRepository.deleteById(id);
     }
 

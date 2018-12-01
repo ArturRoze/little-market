@@ -67,17 +67,6 @@ public class OrderServiceImpl implements OrderService {
         if (title != null) {
             orderEntityFromDb.setTitle(title);
         }
-//        String creationDate = orderDto.getCreationDate();
-//        if (creationDate != null){
-//            Timestamp timestamp = DateConverterUtil.convertStringDateToTimestamp(creationDate);
-//            orderEntityFromDb.setCreationDate(timestamp);
-//        }
-
-//        Long userId = orderDto.getUserId();
-//        if (userId != null){
-//
-//        }
-
         List<UserProductDto> productsDto = orderDto.getProducts();
         if (!productsDto.isEmpty()) {
             List<UserProductDto> products = orderDto.getProducts();
@@ -85,9 +74,5 @@ public class OrderServiceImpl implements OrderService {
             List<ProductEntity> productEntities = productRepository.readProductsByUuids(uuids);
             orderEntityFromDb.setProducts(productEntities);
         }
-    }
-
-    public Double getTotalPriceOrder(OrderDto orderDto) {
-        return orderDto.getProducts().stream().mapToDouble(item -> item.getPrice()).sum();
     }
 }
