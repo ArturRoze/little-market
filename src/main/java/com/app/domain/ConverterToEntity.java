@@ -41,8 +41,9 @@ public class ConverterToEntity {
 
     public ProductEntity convertToProductEntity(ProductDto productDto) {
         SubCategoryDto subCategoryDto = productDto.getSubCategory();
-        String name;
+
         //добавлено как заглушка
+        String name;
         if (subCategoryDto == null) {
             name = "coats";
         }else {
@@ -54,11 +55,18 @@ public class ConverterToEntity {
         Double price = productDto.getPrice();
         String disabledReason = productDto.getDisabledReason();
         ProductDescriptionEntity productDescriptionEntity = getProductDescriptionFromDto(productDto);
-        ShipmentEntity shipmentEntity = getShipmentFromDto(productDto);
+        ShipmentEntity shipmentEntity = getShipmentFromProductDto(productDto);
         return new ProductEntity(subCategoryEntity, title, price, false, disabledReason, false, productDescriptionEntity, shipmentEntity);
     }
 
-    public ShipmentEntity getShipmentFromDto(ProductDto productDto) {
+    public ShipmentEntity convertToShipmentEntity(ShipmentDto shipmentDto){
+        String shipmentDescription = shipmentDto.getDescription();
+        String shipmentIncomeDate = shipmentDto.getIncomeDate();
+        Timestamp shipmentDate = DateConverterUtil.convertStringDateToTimestamp(shipmentIncomeDate);
+        return new ShipmentEntity(shipmentDescription, shipmentDate);
+    }
+
+    public ShipmentEntity getShipmentFromProductDto(ProductDto productDto) {
         ShipmentDto shipmentDto = productDto.getShipment();
 
         //заглушка
@@ -66,29 +74,23 @@ public class ConverterToEntity {
             return null;
         }
 
+        return convertToShipmentEntity(shipmentDto);
+    }
 
-        Long shipmentId = shipmentDto.getId();
-        String shipmentDescription = shipmentDto.getDescription();
-        String shipmentIncomeDate = shipmentDto.getIncomeDate();
-        Timestamp shipmentDate = DateConverterUtil.convertStringDateToTimestamp(shipmentIncomeDate);
-        ShipmentEntity shipmentEntity = new ShipmentEntity(shipmentDescription, shipmentDate);
-        shipmentEntity.setId(shipmentId);
-        return shipmentEntity;
+    public ProductDescriptionEntity convertToProductDescriptionEntity(DescriptionDto descriptionDto) {
+        String name = descriptionDto.getName();
+        String description = descriptionDto.getDescription();
+        return new ProductDescriptionEntity(name, description);
     }
 
     public ProductDescriptionEntity getProductDescriptionFromDto(ProductDto productDto) {
+        DescriptionDto descriptionDto = productDto.getDescription();
         //заглушка
-        if (productDto.getProductDescription() == null){
+        if (descriptionDto == null){
             return null;
         }
 
-        ProductDescriptionDto productDescriptionDto = productDto.getProductDescription();
-        Long productDescriptionId = productDescriptionDto.getId();
-        String nameDescription = productDescriptionDto.getName();
-        String description = productDescriptionDto.getDescription();
-        ProductDescriptionEntity productDescriptionEntity = new ProductDescriptionEntity(nameDescription, description);
-        productDescriptionEntity.setId(productDescriptionId);
-        return productDescriptionEntity;
+        return convertToProductDescriptionEntity(descriptionDto);
     }
 
     public OrderEntity convertToOrderEntity(OrderDto orderDto) {

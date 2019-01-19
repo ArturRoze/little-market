@@ -9,6 +9,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "shipment")
+@NamedQueries({
+        @NamedQuery(query = "select sh from ShipmentEntity sh", name = "get_all_shipments"),
+        @NamedQuery(query = "select sh from ShipmentEntity sh where sh.description = :description", name = "get_shipment_by_description")
+})
 public class ShipmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

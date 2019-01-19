@@ -13,7 +13,7 @@ public class ProductDto {
     private Double price;
     private boolean disabled;
     private String disabledReason;
-    private ProductDescriptionDto productDescription;
+    private DescriptionDto description;
     private ShipmentDto shipment;
 
 }

@@ -76,6 +76,4 @@ public class ProductController {
         LOGGER.info("availableProducts: {}", availableProducts);
         return availableProducts;
     }
-
-
 }

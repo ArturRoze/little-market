@@ -1,6 +1,6 @@
 package com.app.service.impl;
 
-import com.app.domain.*;
+import com.app.domain.ConverterToEntity;
 import com.app.domain.income.*;
 import com.app.domain.outcome.ProductMsgResponse;
 import com.app.exception.ProductException;
@@ -214,14 +214,14 @@ public class ProductServiceImpl implements ProductService {
         if (disabledReason != null) {
             productEntityFromDb.setDisabledReason(disabledReason);
         }
-        ProductDescriptionDto productDescriptionDto = productDto.getProductDescription();
-        if (productDescriptionDto != null) {
+        DescriptionDto descriptionDto = productDto.getDescription();
+        if (descriptionDto != null) {
             ProductDescriptionEntity productDescriptionEntity = productEntityFromDb.getProductDescriptionEntity();
-            String name = productDescriptionDto.getName();
+            String name = descriptionDto.getName();
             if (name != null) {
                 productDescriptionEntity.setName(name);
             }
-            String description = productDescriptionDto.getDescription();
+            String description = descriptionDto.getDescription();
             if (description != null) {
                 productDescriptionEntity.setDescription(description);
             }

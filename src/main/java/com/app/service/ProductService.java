@@ -6,7 +6,7 @@ import com.app.model.ProductEntity;
 
 import java.util.List;
 
-public interface ProductService extends BlockProduct {
+public interface ProductService extends BlockProductService {
 
     void buyProduct(OrderDto orderDto);
 
