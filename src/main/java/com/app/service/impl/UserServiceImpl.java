@@ -1,7 +1,7 @@
 package com.app.service.impl;
 
 import com.app.domain.ConverterToEntity;
-import com.app.domain.UserDto;
+import com.app.domain.income.UserDto;
 import com.app.model.UserEntity;
 import com.app.repository.UserRepository;
 import com.app.service.UserService;

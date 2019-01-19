@@ -1,5 +1,6 @@
 package com.app.domain;
 
+import com.app.domain.income.*;
 import com.app.model.*;
 import com.app.repository.ProductRepository;
 import com.app.repository.SubCategoryRepository;
@@ -40,7 +41,14 @@ public class ConverterToEntity {
 
     public ProductEntity convertToProductEntity(ProductDto productDto) {
         SubCategoryDto subCategoryDto = productDto.getSubCategory();
-        String name = subCategoryDto.getName();
+        String name;
+        //добавлено как заглушка
+        if (subCategoryDto == null) {
+            name = "coats";
+        }else {
+            name = subCategoryDto.getName();
+        }
+
         SubCategoryEntity subCategoryEntity = subCategoryRepository.getSubCategoryByName(name);
         String title = productDto.getTitle();
         Double price = productDto.getPrice();
@@ -52,6 +60,13 @@ public class ConverterToEntity {
 
     public ShipmentEntity getShipmentFromDto(ProductDto productDto) {
         ShipmentDto shipmentDto = productDto.getShipment();
+
+        //заглушка
+        if (shipmentDto == null){
+            return null;
+        }
+
+
         Long shipmentId = shipmentDto.getId();
         String shipmentDescription = shipmentDto.getDescription();
         String shipmentIncomeDate = shipmentDto.getIncomeDate();
@@ -62,6 +77,11 @@ public class ConverterToEntity {
     }
 
     public ProductDescriptionEntity getProductDescriptionFromDto(ProductDto productDto) {
+        //заглушка
+        if (productDto.getProductDescription() == null){
+            return null;
+        }
+
         ProductDescriptionDto productDescriptionDto = productDto.getProductDescription();
         Long productDescriptionId = productDescriptionDto.getId();
         String nameDescription = productDescriptionDto.getName();

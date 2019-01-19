@@ -1,6 +1,8 @@
 package com.app.service.impl;
 
 import com.app.domain.*;
+import com.app.domain.income.*;
+import com.app.domain.outcome.ProductMsgResponse;
 import com.app.exception.ProductException;
 import com.app.model.ProductDescriptionEntity;
 import com.app.model.ProductEntity;

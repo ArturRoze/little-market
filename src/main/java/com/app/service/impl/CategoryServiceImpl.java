@@ -1,8 +1,8 @@
 package com.app.service.impl;
 
-import com.app.domain.CategoryDto;
+import com.app.domain.income.CategoryDto;
 import com.app.domain.ConverterToEntity;
-import com.app.domain.SubCategoryDto;
+import com.app.domain.income.SubCategoryDto;
 import com.app.model.CategoryEntity;
 import com.app.model.SubCategoryEntity;
 import com.app.repository.CategoryRepository;

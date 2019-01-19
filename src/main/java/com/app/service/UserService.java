@@ -1,6 +1,6 @@
 package com.app.service;
 
-import com.app.domain.UserDto;
+import com.app.domain.income.UserDto;
 import com.app.model.UserEntity;
 
 public interface UserService {

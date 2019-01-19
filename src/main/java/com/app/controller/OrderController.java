@@ -1,6 +1,6 @@
 package com.app.controller;
 
-import com.app.domain.OrderDto;
+import com.app.domain.income.OrderDto;
 import com.app.model.OrderEntity;
 import com.app.service.OrderService;
 import org.slf4j.Logger;
@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
+
 @RequestMapping("/orders")
 public class OrderController {
 

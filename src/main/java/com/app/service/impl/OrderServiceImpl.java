@@ -1,8 +1,8 @@
 package com.app.service.impl;
 
 import com.app.domain.ConverterToEntity;
-import com.app.domain.OrderDto;
-import com.app.domain.UserProductDto;
+import com.app.domain.income.OrderDto;
+import com.app.domain.income.UserProductDto;
 import com.app.model.OrderEntity;
 import com.app.model.ProductEntity;
 import com.app.repository.OrderRepository;

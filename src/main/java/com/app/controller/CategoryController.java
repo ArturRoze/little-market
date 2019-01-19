@@ -1,6 +1,6 @@
 package com.app.controller;
 
-import com.app.domain.CategoryDto;
+import com.app.domain.income.CategoryDto;
 import com.app.model.CategoryEntity;
 import com.app.service.CategoryService;
 import com.mysql.jdbc.StringUtils;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("categories")
 public class CategoryController {
 

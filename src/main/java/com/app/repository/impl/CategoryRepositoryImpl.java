@@ -59,6 +59,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
+    @Transactional
     public CategoryEntity update(CategoryEntity categoryEntity) {
         CategoryEntity mergeCategory = entityManager.merge(categoryEntity);
         LOGGER.info("updated category: " + mergeCategory);
@@ -66,6 +67,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryEntity> readAll() {
         TypedQuery<CategoryEntity> categoryEntityTypedQuery = entityManager.createNamedQuery("get_all_categories", CategoryEntity.class);
         LOGGER.info("read all category: {} ", categoryEntityTypedQuery);

@@ -1,6 +1,6 @@
 package com.app.controller;
 
-import com.app.domain.ProductDto;
+import com.app.domain.income.ProductDto;
 import com.app.model.ProductEntity;
 import com.app.service.ProductService;
 import com.mysql.jdbc.StringUtils;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/products")
 public class ProductController {
 
@@ -50,7 +51,7 @@ public class ProductController {
     public ResponseEntity addProduct(@RequestBody ProductDto productDto) {
         LOGGER.info("income request: {}", productDto);
         LOGGER.info("resultOfAdd: {}", productService.addProduct(productDto));
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")

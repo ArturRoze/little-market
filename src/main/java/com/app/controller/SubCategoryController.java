@@ -1,6 +1,6 @@
 package com.app.controller;
 
-import com.app.domain.SubCategoryDto;
+import com.app.domain.income.SubCategoryDto;
 import com.app.model.SubCategoryEntity;
 import com.app.service.SubCategoryService;
 import com.mysql.jdbc.StringUtils;
@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("subcategories")
 public class SubCategoryController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

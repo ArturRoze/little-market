@@ -1,7 +1,7 @@
 package com.app.controller;
 
-import com.app.domain.OrderDto;
-import com.app.domain.UserDto;
+import com.app.domain.income.OrderDto;
+import com.app.domain.income.UserDto;
 import com.app.model.UserEntity;
 import com.app.service.ProductService;
 import com.app.service.UserService;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/users")
 public class UserController {
 
@@ -28,10 +29,10 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity addUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
         LOGGER.info("income user: {}", userDto);
         LOGGER.info("resultOfCreating: {}", userService.addUser(userDto));
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

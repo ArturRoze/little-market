@@ -1,6 +1,6 @@
 package com.app.service;
 
-import com.app.domain.CategoryDto;
+import com.app.domain.income.CategoryDto;
 import com.app.model.CategoryEntity;
 
 import java.util.List;

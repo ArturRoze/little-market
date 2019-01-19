@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "product")
 @NamedQueries({
-        @NamedQuery(query = "select p from ProductEntity p join p.productDescriptionEntity join p.shipmentEntity", name = "get_all_products"),
+        @NamedQuery(query = "select p from ProductEntity p left join p.productDescriptionEntity left join p.shipmentEntity", name = "get_all_products"),
         @NamedQuery(query = "select p from ProductEntity p where p.title = :title", name = "get_all_products_by_title"),
         @NamedQuery(query = "select p from ProductEntity p where p.uuid in :uuids", name = "get_products_by_uuids"),
         @NamedQuery(query = "update ProductEntity p set p.disabled = true, p.disabledReason = :description where p.id in :ids", name = "disable_products_by_ids_with_reason"),
