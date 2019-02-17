@@ -1,6 +1,6 @@
 package com.app.repository.impl;
 
-import com.app.model.UserEntity;
+import com.app.model.entity.UserEntity;
 import com.app.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

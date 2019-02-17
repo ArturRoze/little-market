@@ -1,10 +1,10 @@
 package com.app.service.impl;
 
-import com.app.domain.income.CategoryDto;
-import com.app.domain.ConverterToEntity;
-import com.app.domain.income.SubCategoryDto;
-import com.app.model.CategoryEntity;
-import com.app.model.SubCategoryEntity;
+import com.app.model.income.CategoryDto;
+import com.app.model.ConverterToEntity;
+import com.app.model.income.SubCategoryDto;
+import com.app.model.entity.CategoryEntity;
+import com.app.model.entity.SubCategoryEntity;
 import com.app.repository.SubCategoryRepository;
 import com.app.service.SubCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

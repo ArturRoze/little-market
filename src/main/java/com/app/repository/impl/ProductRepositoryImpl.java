@@ -1,6 +1,6 @@
 package com.app.repository.impl;
 
-import com.app.model.ProductEntity;
+import com.app.model.entity.ProductEntity;
 import com.app.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package com.app.exception;
 
-import com.app.domain.outcome.ProductMsgResponse;
+import com.app.model.outcome.ProductMsgResponse;
 
 import java.util.List;
 

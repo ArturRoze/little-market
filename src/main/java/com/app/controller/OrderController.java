@@ -1,7 +1,7 @@
 package com.app.controller;
 
-import com.app.domain.income.OrderDto;
-import com.app.model.OrderEntity;
+import com.app.model.income.OrderDto;
+import com.app.model.entity.OrderEntity;
 import com.app.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.app.controller;
 
-import com.app.domain.income.DescriptionDto;
-import com.app.model.ProductDescriptionEntity;
+import com.app.model.income.DescriptionDto;
+import com.app.model.entity.ProductDescriptionEntity;
 import com.app.service.ProductDescriptionService;
 import com.mysql.jdbc.StringUtils;
 import org.slf4j.Logger;

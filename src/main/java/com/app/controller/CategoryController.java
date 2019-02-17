@@ -1,7 +1,8 @@
 package com.app.controller;
 
-import com.app.domain.income.CategoryDto;
-import com.app.model.CategoryEntity;
+import com.app.model.income.CategoryDto;
+import com.app.model.outcome.CategoryOutcomeDto;
+import com.app.model.entity.CategoryEntity;
 import com.app.service.CategoryService;
 import com.mysql.jdbc.StringUtils;
 import org.slf4j.Logger;
@@ -28,10 +29,11 @@ public class CategoryController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity addCategory(@RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<CategoryOutcomeDto> addCategory(@RequestBody CategoryDto categoryDto) {
         LOGGER.info("income category: {}", categoryDto);
-        LOGGER.info("resultOfAdd: {}", categoryService.addCategory(categoryDto));
-        return new ResponseEntity(HttpStatus.OK);
+        CategoryOutcomeDto categoryOutcomeDto = categoryService.addCategory(categoryDto);
+        LOGGER.info("resultOfAdd: {}", categoryOutcomeDto);
+        return new ResponseEntity<>(categoryOutcomeDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/all")
@@ -41,13 +43,13 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public CategoryEntity readById(@PathVariable long id) {
+    public CategoryOutcomeDto readById(@PathVariable long id) {
         LOGGER.info("read category by id: ", id);
         return categoryService.getCategoryById(id);
     }
 
     @GetMapping("/{name}")
-    public CategoryEntity getByName(@PathVariable String name) {
+    public CategoryOutcomeDto getByName(@PathVariable String name) {
         LOGGER.info("get category by name: {}", name);
         if (StringUtils.isNullOrEmpty(name)){
             return null;
@@ -56,10 +58,11 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@RequestBody CategoryDto categoryDto, @PathVariable long id) {
+    public ResponseEntity<CategoryOutcomeDto> update(@RequestBody CategoryDto categoryDto, @PathVariable long id) {
         LOGGER.info("income category: {} with id: {}", categoryDto, id);
-        LOGGER.info("resultOfUpdate: {}", categoryService.updateCategory(categoryDto, id));
-        return new ResponseEntity(HttpStatus.OK);
+        CategoryOutcomeDto categoryOutcomeDto = categoryService.updateCategory(categoryDto, id);
+        LOGGER.info("resultOfUpdate: {}", categoryOutcomeDto);
+        return new ResponseEntity<>(categoryOutcomeDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -1,10 +1,12 @@
 package com.app.service.impl;
 
-import com.app.domain.income.CategoryDto;
-import com.app.domain.ConverterToEntity;
-import com.app.domain.income.SubCategoryDto;
-import com.app.model.CategoryEntity;
-import com.app.model.SubCategoryEntity;
+import com.app.model.ConverterToDto;
+import com.app.model.income.CategoryDto;
+import com.app.model.ConverterToEntity;
+import com.app.model.income.SubCategoryDto;
+import com.app.model.outcome.CategoryOutcomeDto;
+import com.app.model.entity.CategoryEntity;
+import com.app.model.entity.SubCategoryEntity;
 import com.app.repository.CategoryRepository;
 import com.app.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +20,30 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ConverterToEntity converterToEntity;
+    private final ConverterToDto converterToDto;
+
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ConverterToEntity converterToEntity) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ConverterToEntity converterToEntity, ConverterToDto converterToDto) {
         this.categoryRepository = categoryRepository;
         this.converterToEntity = converterToEntity;
+        this.converterToDto = converterToDto;
     }
 
     @Override
-    public CategoryEntity getCategoryByName(String name) {
-        return categoryRepository.getCategoryByName(name);
+    public CategoryOutcomeDto getCategoryByName(String name) {
+        CategoryEntity categoryEntity = categoryRepository.getCategoryByName(name);
+        return converterToDto.convertToCategoryOutcomeDto(categoryEntity);
     }
 
     @Override
-    public boolean addCategory(CategoryDto categoryDto) {
+    public CategoryOutcomeDto addCategory(CategoryDto categoryDto) {
         CategoryEntity categoryEntity = converterToEntity.convertToCategoryEntity(categoryDto);
         CategoryEntity savedCategoryEntity = categoryRepository.save(categoryEntity);
-        return savedCategoryEntity.getId() != null;
+        if (savedCategoryEntity.getId() != null){
+            return converterToDto.convertToCategoryOutcomeDto(savedCategoryEntity);
+        }
+        return null;
     }
 
     @Override
@@ -43,15 +52,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryEntity getCategoryById(Long id) {
-        return categoryRepository.readById(id);
+    public CategoryOutcomeDto getCategoryById(Long id) {
+        CategoryEntity categoryEntity = categoryRepository.readById(id);
+        return converterToDto.convertToCategoryOutcomeDto(categoryEntity);
     }
 
     @Override
-    public CategoryEntity updateCategory(CategoryDto categoryDto, long id) {
+    public CategoryOutcomeDto updateCategory(CategoryDto categoryDto, long id) {
         CategoryEntity categoryEntityFromDb = categoryRepository.readById(id);
         changeFieldsCategoryDtoToCategoryEntity(categoryDto, categoryEntityFromDb);
-        return categoryRepository.update(categoryEntityFromDb);
+        CategoryEntity updatedCategoryEntity = categoryRepository.update(categoryEntityFromDb);
+        return converterToDto.convertToCategoryOutcomeDto(updatedCategoryEntity);
     }
 
     @Override

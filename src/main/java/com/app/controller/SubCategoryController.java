@@ -1,7 +1,7 @@
 package com.app.controller;
 
-import com.app.domain.income.SubCategoryDto;
-import com.app.model.SubCategoryEntity;
+import com.app.model.income.SubCategoryDto;
+import com.app.model.entity.SubCategoryEntity;
 import com.app.service.SubCategoryService;
 import com.mysql.jdbc.StringUtils;
 import org.slf4j.Logger;

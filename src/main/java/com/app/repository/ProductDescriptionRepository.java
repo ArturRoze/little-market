@@ -1,6 +1,6 @@
 package com.app.repository;
 
-import com.app.model.ProductDescriptionEntity;
+import com.app.model.entity.ProductDescriptionEntity;
 
 import java.util.List;
 

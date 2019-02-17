@@ -1,8 +1,8 @@
 package com.app.service.impl;
 
-import com.app.domain.ConverterToEntity;
-import com.app.domain.income.DescriptionDto;
-import com.app.model.ProductDescriptionEntity;
+import com.app.model.ConverterToEntity;
+import com.app.model.income.DescriptionDto;
+import com.app.model.entity.ProductDescriptionEntity;
 import com.app.repository.ProductDescriptionRepository;
 import com.app.service.ProductDescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;

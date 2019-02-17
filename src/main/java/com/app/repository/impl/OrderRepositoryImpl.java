@@ -1,6 +1,6 @@
 package com.app.repository.impl;
 
-import com.app.model.OrderEntity;
+import com.app.model.entity.OrderEntity;
 import com.app.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.app.controller;
 
-import com.app.domain.income.ShipmentDto;
-import com.app.model.ShipmentEntity;
+import com.app.model.income.ShipmentDto;
+import com.app.model.entity.ShipmentEntity;
 import com.app.service.ShipmentService;
 import com.mysql.jdbc.StringUtils;
 import org.slf4j.Logger;

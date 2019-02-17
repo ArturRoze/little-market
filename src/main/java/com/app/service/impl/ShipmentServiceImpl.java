@@ -1,8 +1,8 @@
 package com.app.service.impl;
 
-import com.app.domain.ConverterToEntity;
-import com.app.domain.income.ShipmentDto;
-import com.app.model.ShipmentEntity;
+import com.app.model.ConverterToEntity;
+import com.app.model.income.ShipmentDto;
+import com.app.model.entity.ShipmentEntity;
 import com.app.repository.ShipmentRepository;
 import com.app.service.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;

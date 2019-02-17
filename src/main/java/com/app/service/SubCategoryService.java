@@ -1,7 +1,7 @@
 package com.app.service;
 
-import com.app.domain.income.SubCategoryDto;
-import com.app.model.SubCategoryEntity;
+import com.app.model.income.SubCategoryDto;
+import com.app.model.entity.SubCategoryEntity;
 
 import java.util.List;
 

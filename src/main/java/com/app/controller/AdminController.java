@@ -1,6 +1,6 @@
 package com.app.controller;
 
-import com.app.domain.income.BlockRequestDto;
+import com.app.model.income.BlockRequestDto;
 import com.app.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

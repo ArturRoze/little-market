@@ -1,6 +1,6 @@
 package com.app.repository.impl;
 
-import com.app.model.ShipmentEntity;
+import com.app.model.entity.ShipmentEntity;
 import com.app.repository.ShipmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

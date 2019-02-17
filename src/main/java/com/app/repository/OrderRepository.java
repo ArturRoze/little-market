@@ -1,6 +1,6 @@
 package com.app.repository;
 
-import com.app.model.OrderEntity;
+import com.app.model.entity.OrderEntity;
 
 import java.util.List;
 

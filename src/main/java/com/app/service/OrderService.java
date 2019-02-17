@@ -1,7 +1,7 @@
 package com.app.service;
 
-import com.app.domain.income.OrderDto;
-import com.app.model.OrderEntity;
+import com.app.model.income.OrderDto;
+import com.app.model.entity.OrderEntity;
 
 import java.util.List;
 

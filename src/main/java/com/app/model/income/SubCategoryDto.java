@@ -1,8 +1,10 @@
-package com.app.domain.income;
+package com.app.model.income;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class SubCategoryDto {
 
     private String name;

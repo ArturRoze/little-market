@@ -1,9 +1,7 @@
 package com.app.repository.impl;
 
-import com.app.model.ProductDescriptionEntity;
-import com.app.model.ShipmentEntity;
+import com.app.model.entity.ProductDescriptionEntity;
 import com.app.repository.ProductDescriptionRepository;
-import com.app.repository.ShipmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

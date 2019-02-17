@@ -1,6 +1,6 @@
 package com.app.controller;
 
-import com.app.domain.outcome.ProductResponse;
+import com.app.model.outcome.ProductResponse;
 import com.app.exception.ProductException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

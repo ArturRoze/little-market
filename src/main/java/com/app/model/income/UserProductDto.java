@@ -1,4 +1,4 @@
-package com.app.domain.income;
+package com.app.model.income;
 
 import lombok.Data;
 

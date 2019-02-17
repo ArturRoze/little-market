@@ -1,6 +1,6 @@
 package com.app.repository;
 
-import com.app.model.ShipmentEntity;
+import com.app.model.entity.ShipmentEntity;
 
 import java.util.List;
 

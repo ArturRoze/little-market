@@ -1,11 +1,11 @@
-package com.app.domain.outcome;
+package com.app.model.income;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserOutcomeDto {
+public class UserDto {
     private String login;
     private String password;
     private String email;

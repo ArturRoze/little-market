@@ -1,6 +1,6 @@
 package com.app.repository;
 
-import com.app.model.UserEntity;
+import com.app.model.entity.UserEntity;
 
 public interface UserRepository {
 

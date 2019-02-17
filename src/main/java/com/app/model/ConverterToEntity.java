@@ -1,7 +1,7 @@
-package com.app.domain;
+package com.app.model;
 
-import com.app.domain.income.*;
-import com.app.model.*;
+import com.app.model.entity.*;
+import com.app.model.income.*;
 import com.app.repository.ProductRepository;
 import com.app.repository.SubCategoryRepository;
 import com.app.repository.UserRepository;

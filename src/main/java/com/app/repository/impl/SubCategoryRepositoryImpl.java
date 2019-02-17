@@ -1,7 +1,6 @@
 package com.app.repository.impl;
 
-import com.app.model.CategoryEntity;
-import com.app.model.SubCategoryEntity;
+import com.app.model.entity.SubCategoryEntity;
 import com.app.repository.SubCategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

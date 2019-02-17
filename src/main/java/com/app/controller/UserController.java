@@ -1,8 +1,8 @@
 package com.app.controller;
 
-import com.app.domain.income.OrderDto;
-import com.app.domain.income.UserDto;
-import com.app.model.UserEntity;
+import com.app.model.income.OrderDto;
+import com.app.model.income.UserDto;
+import com.app.model.outcome.UserOutcomeDto;
 import com.app.service.ProductService;
 import com.app.service.UserService;
 import org.slf4j.Logger;
@@ -29,29 +29,31 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserOutcomeDto> addUser(@RequestBody UserDto userDto) {
         LOGGER.info("income user: {}", userDto);
-        LOGGER.info("resultOfCreating: {}", userService.addUser(userDto));
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+        UserOutcomeDto userOutcomeDto = userService.addUser(userDto);
+        LOGGER.info("resultOfCreating response user: {}", userOutcomeDto);
+        return new ResponseEntity<>(userOutcomeDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public UserEntity readUserById(@PathVariable long id) {
+    public UserOutcomeDto readUserById(@PathVariable long id) {
         LOGGER.info("read user by id: ", id);
         return userService.getUserById(id);
     }
 
     @GetMapping("/{login}")
-    public UserEntity readUserByLogin(@PathVariable String login) {
+    public UserOutcomeDto readUserByLogin(@PathVariable String login) {
         LOGGER.info("read user by login: ", login);
         return userService.getUserByLogin(login);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateUser(@RequestBody UserDto userDto, @PathVariable long id) {
+    public ResponseEntity<UserOutcomeDto> updateUser(@RequestBody UserDto userDto, @PathVariable long id) {
         LOGGER.info("income user: {} with id: {}", userDto, id);
-        LOGGER.info("resultOfUpdate: {}", userService.updateUser(userDto, id));
-        return new ResponseEntity(HttpStatus.OK);
+        UserOutcomeDto userOutcomeDto = userService.updateUser(userDto, id);
+        LOGGER.info("resultOfUpdate: {}", userOutcomeDto);
+        return new ResponseEntity<>(userOutcomeDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

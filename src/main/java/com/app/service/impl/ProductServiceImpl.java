@@ -1,13 +1,13 @@
 package com.app.service.impl;
 
-import com.app.domain.ConverterToEntity;
-import com.app.domain.income.*;
-import com.app.domain.outcome.ProductMsgResponse;
+import com.app.model.ConverterToEntity;
+import com.app.model.income.*;
+import com.app.model.outcome.ProductMsgResponse;
 import com.app.exception.ProductException;
-import com.app.model.ProductDescriptionEntity;
-import com.app.model.ProductEntity;
-import com.app.model.ShipmentEntity;
-import com.app.model.SubCategoryEntity;
+import com.app.model.entity.ProductDescriptionEntity;
+import com.app.model.entity.ProductEntity;
+import com.app.model.entity.ShipmentEntity;
+import com.app.model.entity.SubCategoryEntity;
 import com.app.repository.ProductRepository;
 import com.app.service.OrderService;
 import com.app.service.ProductService;

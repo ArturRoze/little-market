@@ -1,6 +1,6 @@
 package com.app.repository;
 
-import com.app.model.CategoryEntity;
+import com.app.model.entity.CategoryEntity;
 
 import java.util.List;
 

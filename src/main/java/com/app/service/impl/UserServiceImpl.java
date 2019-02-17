@@ -1,8 +1,10 @@
 package com.app.service.impl;
 
-import com.app.domain.ConverterToEntity;
-import com.app.domain.income.UserDto;
-import com.app.model.UserEntity;
+import com.app.model.ConverterToDto;
+import com.app.model.ConverterToEntity;
+import com.app.model.income.UserDto;
+import com.app.model.outcome.UserOutcomeDto;
+import com.app.model.entity.UserEntity;
 import com.app.repository.UserRepository;
 import com.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,35 +16,43 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ConverterToEntity converterToEntity;
+    private final ConverterToDto converterToDto;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ConverterToEntity converterToEntity) {
+    public UserServiceImpl(UserRepository userRepository, ConverterToEntity converterToEntity, ConverterToDto converterToDto) {
         this.userRepository = userRepository;
         this.converterToEntity = converterToEntity;
+        this.converterToDto = converterToDto;
     }
 
     @Override
-    public boolean addUser(UserDto userDto) {
+    public UserOutcomeDto addUser(UserDto userDto) {
         UserEntity userEntity = converterToEntity.convertToUserEntity(userDto);
         UserEntity savedUserEntity = userRepository.saveUser(userEntity);
-        return savedUserEntity.getId() != null;
+        if (savedUserEntity.getId() != null){
+            return converterToDto.convertToUserOutcomeDto(savedUserEntity);
+        }
+        return null;
     }
 
     @Override
-    public UserEntity getUserById(Long id) {
-        return userRepository.readUserById(id);
+    public UserOutcomeDto getUserById(Long id) {
+        UserEntity userEntity = userRepository.readUserById(id);
+        return converterToDto.convertToUserOutcomeDto(userEntity);
     }
 
     @Override
-    public UserEntity getUserByLogin(String login) {
-        return userRepository.readUserByLogin(login);
+    public UserOutcomeDto getUserByLogin(String login) {
+        UserEntity userEntity = userRepository.readUserByLogin(login);
+        return converterToDto.convertToUserOutcomeDto(userEntity);
     }
 
     @Override
-    public UserEntity updateUser(UserDto userDto, Long id) {
+    public UserOutcomeDto updateUser(UserDto userDto, Long id) {
         UserEntity userEntityFromDb = userRepository.readUserById(id);
         changeFieldsUserDtoToUserEntity(userDto, userEntityFromDb);
-        return userRepository.updateUser(userEntityFromDb);
+        UserEntity userEntity = userRepository.updateUser(userEntityFromDb);
+        return converterToDto.convertToUserOutcomeDto(userEntity);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.app.domain.outcome;
+package com.app.model.outcome;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
